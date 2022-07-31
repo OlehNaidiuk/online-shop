@@ -7,7 +7,9 @@ import com.naidiuk.onlineshop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,5 +23,19 @@ public class ProductServiceImpl implements ProductService {
         return products.stream()
                         .map(ProductMapper::transformToDto)
                         .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductDto> findTenRandom() {
+        List<Product> products = productRepository.findAll();
+        Random random = new Random();
+        List<Product> tenRandomProducts = new ArrayList<>(10);
+        for (int i = 0; i < 10; i++) {
+            int index = random.nextInt(products.size());
+            tenRandomProducts.add(products.get(index));
+        }
+        return tenRandomProducts.stream()
+                                .map(ProductMapper::transformToDto)
+                                .collect(Collectors.toList());
     }
 }

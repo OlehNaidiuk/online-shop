@@ -1,7 +1,6 @@
 package com.naidiuk.onlineshop.controller;
 
 import com.naidiuk.onlineshop.dto.ProductDto;
-import com.naidiuk.onlineshop.entity.Product;
 import com.naidiuk.onlineshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +20,12 @@ public class ProductController {
     @GetMapping("/products")
     public ResponseEntity<List<ProductDto>> findAll() {
         List<ProductDto> productsDto = productService.findAll();
+        return ResponseEntity.status(HttpStatus.OK).body(productsDto);
+    }
+
+    @GetMapping("/products/random")
+    public ResponseEntity<List<ProductDto>> findTenRandom() {
+        List<ProductDto> productsDto = productService.findTenRandom();
         return ResponseEntity.status(HttpStatus.OK).body(productsDto);
     }
 }

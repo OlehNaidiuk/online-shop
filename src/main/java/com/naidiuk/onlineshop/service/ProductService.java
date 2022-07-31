@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface ProductService {
     List<ProductDto> findAll();
+    List<ProductDto> findTenRandom();
 }

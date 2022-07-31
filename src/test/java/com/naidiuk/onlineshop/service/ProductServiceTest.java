@@ -25,4 +25,15 @@ class ProductServiceTest {
         assertFalse(products.isEmpty());
         assertEquals(expectedSize, products.size());
     }
+
+    @Test
+    void testFindTenRandom() {
+        //when
+        List<ProductDto> products = productService.findTenRandom();
+        int expectedSize = 10;
+
+        //then
+        assertFalse(products.isEmpty());
+        assertEquals(expectedSize, products.size());
+    }
 }

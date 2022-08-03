@@ -1,8 +1,6 @@
 package com.naidiuk.onlineshop.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -11,8 +9,9 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
-@Setter
+@AllArgsConstructor
 @Getter
+@Builder
 @Table(name = "product")
 public class Product {
     @Id

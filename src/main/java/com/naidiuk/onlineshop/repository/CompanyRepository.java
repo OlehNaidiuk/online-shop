@@ -1,0 +1,7 @@
+package com.naidiuk.onlineshop.repository;
+
+import com.naidiuk.onlineshop.entity.Company;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CompanyRepository extends JpaRepository<Company, Long> {
+}

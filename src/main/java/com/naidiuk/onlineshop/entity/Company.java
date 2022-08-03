@@ -1,16 +1,18 @@
 package com.naidiuk.onlineshop.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @NoArgsConstructor
-@Setter
+@AllArgsConstructor
 @Getter
+@Builder
 @Table(name = "company")
 public class Company {
     @Id

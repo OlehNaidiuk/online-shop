@@ -33,8 +33,8 @@ class CategoryServiceTest {
     @Test
     void findAll() {
         //prepare
-        List<Category> categories = new ArrayList<>();
         Category first = mock(Category.class);
+        List<Category> categories = new ArrayList<>();
         categories.add(first);
 
         doReturn(categories).when(mockedCategoryRepository).findAll();

@@ -18,11 +18,6 @@ public class Size {
     private Long sizeId;
     @Column(name = "size_value")
     private String value;
-    @ManyToMany
-    @JoinTable(
-            name = "category_size",
-            joinColumns = @JoinColumn(name = "category_id"),
-            inverseJoinColumns = @JoinColumn(name = "size_id")
-    )
-    private List<Category> categorySizes;
+    @ManyToMany(mappedBy = "sizes")
+    private List<Category> categories;
 }

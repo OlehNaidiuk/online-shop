@@ -30,9 +30,10 @@ class CategoryControllerTest {
     @Test
     void testFindAll() throws Exception {
         //prepare
-        CategoryDto firsDto = new CategoryDto();
-        CategoryDto secondDto = new CategoryDto();
-        CategoryDto thirdDto = new CategoryDto();
+        CategoryDto firsDto = CategoryDto.builder().build();
+        CategoryDto secondDto = CategoryDto.builder().build();
+        CategoryDto thirdDto = CategoryDto.builder().build();
+
         List<CategoryDto> categoriesDto = new ArrayList<>();
         categoriesDto.add(firsDto);
         categoriesDto.add(secondDto);

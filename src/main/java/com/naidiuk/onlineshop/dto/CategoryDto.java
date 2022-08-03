@@ -1,13 +1,13 @@
 package com.naidiuk.onlineshop.dto;
 
-import com.naidiuk.onlineshop.entity.Catalog;
+import com.naidiuk.onlineshop.entity.CatalogType;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
+@Builder
 public class CategoryDto {
     private Long categoryId;
     private String name;
-    private Catalog catalog;
+    private CatalogType catalogType;
 }

@@ -1,5 +1,6 @@
 package com.naidiuk.onlineshop.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,8 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "category")
 public class Category {
     @Id
@@ -30,13 +33,4 @@ public class Category {
     private List<Size> sizes;
     @OneToMany(mappedBy = "category")
     private List<Product> products;
-
-    @Builder
-    public Category(Long categoryId, String name, CatalogType catalogType, List<Size> sizes, List<Product> products) {
-        this.categoryId = categoryId;
-        this.name = name;
-        this.catalogType = catalogType;
-        this.sizes = sizes;
-        this.products = products;
-    }
 }

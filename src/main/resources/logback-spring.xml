@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %cyan(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %magenta(%C{1.}): %msg%n%throwable
+            </Pattern>
+        </layout>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="Console"/>
+    </root>
+
+    <appender name="File" class="ch.qos.logback.core.FileAppender">
+        <file>./logs/online_shop.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%d{ISO8601} [%t] %-5level %logger{20} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.naidiuk.onlineshop.controller.CategoryController" level="info">
+        <appender-ref ref="File"/>
+    </logger>
+
+    <logger name="com.naidiuk.onlineshop.controller.CompanyController" level="info">
+        <appender-ref ref="File"/>
+    </logger>
+
+    <logger name="com.naidiuk.onlineshop.controller.ProductController" level="info">
+        <appender-ref ref="File"/>
+    </logger>
+
+</configuration>

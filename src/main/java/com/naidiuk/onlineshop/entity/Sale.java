@@ -1,5 +1,7 @@
 package com.naidiuk.onlineshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,5 +23,6 @@ public class Sale {
     @Column(name = "sale_value")
     private BigDecimal value;
     @OneToMany(mappedBy = "sale")
+    @JsonBackReference
     private List<Product> products;
 }

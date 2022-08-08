@@ -1,6 +1,10 @@
 package com.naidiuk.onlineshop.entity;
 
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -28,13 +32,17 @@ public class Product {
     private Male male;
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
+    @JsonManagedReference
     private Category category;
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
+    @JsonManagedReference
     private Company company;
     @ManyToOne
     @JoinColumn(name = "sale_id")
+    @JsonManagedReference
     private Sale sale;
     @OneToMany(mappedBy = "product")
+    @JsonManagedReference
     private List<Review> reviews;
 }

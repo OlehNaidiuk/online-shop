@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface CompanyService {
     List<CompanyDto> findAll();
+    CompanyDto findById(Long companyId);
 }

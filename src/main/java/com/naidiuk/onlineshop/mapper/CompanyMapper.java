@@ -8,6 +8,7 @@ public class CompanyMapper {
         return CompanyDto.builder()
                 .companyId(company.getCompanyId())
                 .name(company.getName())
+                .products(company.getProducts())
                 .build();
     }
 }

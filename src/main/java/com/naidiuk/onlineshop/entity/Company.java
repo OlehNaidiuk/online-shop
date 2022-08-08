@@ -1,5 +1,7 @@
 package com.naidiuk.onlineshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,5 +24,6 @@ public class Company {
     @Column(name = "company_name")
     private String name;
     @OneToMany(mappedBy = "company")
+    @JsonBackReference
     private List<Product> products;
 }

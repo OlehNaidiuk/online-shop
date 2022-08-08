@@ -1,5 +1,7 @@
 package com.naidiuk.onlineshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,7 +32,9 @@ public class Category {
             joinColumns = @JoinColumn(name = "category_id"),
             inverseJoinColumns = @JoinColumn(name = "size_id")
     )
+    @JsonManagedReference
     private List<Size> sizes;
     @OneToMany(mappedBy = "category")
+    @JsonBackReference
     private List<Product> products;
 }

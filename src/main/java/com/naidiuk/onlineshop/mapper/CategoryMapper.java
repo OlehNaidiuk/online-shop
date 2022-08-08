@@ -9,6 +9,8 @@ public class CategoryMapper {
                 .categoryId(category.getCategoryId())
                 .name(category.getName())
                 .catalogType(category.getCatalogType())
+                .sizes(category.getSizes())
+                .products(category.getProducts())
                 .build();
     }
 }

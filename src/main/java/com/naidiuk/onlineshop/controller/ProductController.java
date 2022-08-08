@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
 @Slf4j
 public class ProductController {
@@ -23,13 +23,14 @@ public class ProductController {
     @Autowired
     private HttpServletRequest request;
 
-    @GetMapping("/products/random")
+    @GetMapping("/random")
     public ResponseEntity<List<ProductDto>> findTenRandom() {
-        log.info("Request URL: " + request.getRequestURL() + ", "
-                + "Host: " + request.getRemoteHost() + ", "
-                + "Address: " + request.getRemoteAddr() + ", "
-                + "Request URI: " + request.getRequestURI() + ", "
-                + "Request params: " + request.getQueryString() + ".");
+        log.info("Request URL: {}, Host: {}, Address: {}, Request URI: {}, Request params: {}."
+                , request.getRequestURL()
+                , request.getRemoteHost()
+                , request.getRemoteAddr()
+                , request.getRequestURI()
+                , request.getQueryString());
         List<ProductDto> productsDto = productService.findTenRandom();
         return ResponseEntity.status(HttpStatus.OK).body(productsDto);
     }

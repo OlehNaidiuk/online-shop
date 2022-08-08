@@ -25,11 +25,12 @@ public class CategoryController {
 
     @GetMapping
     public ResponseEntity<List<CategoryDto>> findAll() {
-        log.info("Request URL: " + request.getRequestURL() + ", "
-                + "Host: " + request.getRemoteHost() + ", "
-                + "Address: " + request.getRemoteAddr() + ", "
-                + "Request URI: " + request.getRequestURI() + ", "
-                + "Request params: " + request.getQueryString() + ".");
+        log.info("Request URL: {}, Host: {}, Address: {}, Request URI: {}, Request params: {}."
+                , request.getRequestURL()
+                , request.getRemoteHost()
+                , request.getRemoteAddr()
+                , request.getRequestURI()
+                , request.getQueryString());
         List<CategoryDto> categoriesDto = categoryService.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(categoriesDto);
     }

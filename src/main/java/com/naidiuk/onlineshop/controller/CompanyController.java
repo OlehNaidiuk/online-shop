@@ -26,11 +26,12 @@ public class CompanyController {
 
     @GetMapping
     public ResponseEntity<List<CompanyDto>> findAll() {
-        log.info("Request URL: " + request.getRequestURL() + ", "
-                + "Host: " + request.getRemoteHost() + ", "
-                + "Address: " + request.getRemoteAddr() + ", "
-                + "Request URI: " + request.getRequestURI() + ", "
-                + "Request params: " + request.getQueryString() + ".");
+        log.info("Request URL: {}, Host: {}, Address: {}, Request URI: {}, Request params: {}."
+                , request.getRequestURL()
+                , request.getRemoteHost()
+                , request.getRemoteAddr()
+                , request.getRequestURI()
+                , request.getQueryString());
         List<CompanyDto> companiesDto = companyService.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(companiesDto);
     }

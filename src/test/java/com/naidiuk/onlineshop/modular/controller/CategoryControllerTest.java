@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,8 @@ import static org.mockito.Mockito.*;
 class CategoryControllerTest {
     @Mock
     private CategoryService mockedCategoryService;
+    @Mock
+    private HttpServletRequest request;
     @InjectMocks
     private CategoryController categoryController;
 
@@ -36,7 +39,7 @@ class CategoryControllerTest {
         doReturn(categoriesDto).when(mockedCategoryService).findAll();
         
         //when
-        ResponseEntity<List<CategoryDto>> responseEntity = categoryController.findAll();
+        ResponseEntity<List<CategoryDto>> responseEntity = categoryController.findAll(request);
 
         //then
         assertNotNull(responseEntity);

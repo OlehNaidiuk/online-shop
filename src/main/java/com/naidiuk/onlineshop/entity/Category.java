@@ -1,9 +1,13 @@
 package com.naidiuk.onlineshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
@@ -30,7 +34,11 @@ public class Category {
             joinColumns = @JoinColumn(name = "category_id"),
             inverseJoinColumns = @JoinColumn(name = "size_id")
     )
+    @JsonManagedReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Size> sizes;
     @OneToMany(mappedBy = "category")
+    @JsonBackReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Product> products;
 }

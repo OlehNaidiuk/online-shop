@@ -53,10 +53,11 @@ class CompanyControllerTest {
         doReturn(companyDto).when(mockedCompanyService).findById(companyId);
 
         //when
-        CompanyDto foundCompanyDto = companyController.findAllProductsByCompanyId(companyId, request);
+        ResponseEntity<?> responseEntity = companyController.findAllProductsByCompanyId(companyId, request);
 
         //then
-        assertNotNull(foundCompanyDto);
+        assertNotNull(responseEntity);
+        assertEquals(companyDto, responseEntity.getBody());
     }
 
     @Test
@@ -68,7 +69,11 @@ class CompanyControllerTest {
                 .when(mockedCompanyService)
                 .findById(wrongCompanyId);
 
+        //when
+        ResponseEntity<?> responseEntity = companyController.findAllProductsByCompanyId(wrongCompanyId, request);
+
         //then
-        assertThrows(CompanyNotFoundException.class, () -> companyController.findAllProductsByCompanyId(wrongCompanyId, request));
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertTrue(responseEntity.hasBody());
     }
 }

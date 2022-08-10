@@ -1,7 +1,6 @@
 package com.naidiuk.onlineshop.integration.service;
 
 import com.naidiuk.onlineshop.dto.CompanyDto;
-import com.naidiuk.onlineshop.entity.Company;
 import com.naidiuk.onlineshop.error.CompanyNotFoundException;
 import com.naidiuk.onlineshop.service.CompanyService;
 import org.junit.jupiter.api.Test;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 

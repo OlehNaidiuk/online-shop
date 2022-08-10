@@ -1,13 +1,11 @@
-package com.naidiuk.onlineshop.controller.error;
+package com.naidiuk.onlineshop.controller.report;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 @AllArgsConstructor
-public class ApplicationError {
+public class ErrorReport {
     private int statusCode;
     private String Message;
 }

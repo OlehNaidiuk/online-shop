@@ -1,10 +1,11 @@
 package com.naidiuk.onlineshop.controller;
 
+import com.naidiuk.onlineshop.controller.report.ErrorReport;
 import com.naidiuk.onlineshop.dto.CompanyDto;
+import com.naidiuk.onlineshop.error.CompanyNotFoundException;
 import com.naidiuk.onlineshop.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,13 +36,19 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}/products")
-    public CompanyDto findAllProductsByCompanyId(@PathVariable Long id, HttpServletRequest request) {
+    public ResponseEntity<?> findAllProductsByCompanyId(@PathVariable Long id, HttpServletRequest request) {
         log.info("Request URL: {}, Host: {}, Address: {}, Request URI: {}, Request params: {}."
                 , request.getRequestURL()
                 , request.getRemoteHost()
                 , request.getRemoteAddr()
                 , request.getRequestURI()
                 , request.getQueryString());
-        return companyService.findById(id);
+        try {
+            CompanyDto companyDto = companyService.findById(id);
+            return ResponseEntity.status(HttpStatus.OK).body(companyDto);
+        } catch (CompanyNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                .body(new ErrorReport(HttpStatus.NOT_FOUND.value(), e.getMessage()));
+        }
     }
 }

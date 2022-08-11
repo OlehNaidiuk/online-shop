@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
 
@@ -30,19 +31,19 @@ public class Product {
     private String description;
     @Enumerated(EnumType.STRING)
     private Male male;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     @JsonManagedReference
     private Category category;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", nullable = false)
     @JsonManagedReference
     private Company company;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sale_id")
     @JsonManagedReference
     private Sale sale;
     @OneToMany(mappedBy = "product")
     @JsonManagedReference
-    private List<Review> reviews;
+    private List<Review> reviews = new ArrayList<>();
 }

@@ -21,7 +21,7 @@ public class CompanyServiceImpl implements CompanyService {
     public List<CompanyDto> findAll() {
         List<Company> companies = companyRepository.findAll();
         return companies.stream()
-                .map(CompanyMapper::transformToDto)
+                .map(CompanyMapper::transformToDtoWithoutProducts)
                 .collect(Collectors.toList());
     }
 

@@ -1,11 +1,13 @@
 package com.naidiuk.onlineshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,5 +24,6 @@ public class Company {
     @Column(name = "company_name")
     private String name;
     @OneToMany(mappedBy = "company")
-    private List<Product> products;
+    @JsonBackReference
+    private List<Product> products = new ArrayList<>();
 }

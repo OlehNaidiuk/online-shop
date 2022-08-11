@@ -13,6 +13,10 @@ public class ProductMapper {
                 .name(product.getName())
                 .description(product.getDescription())
                 .male(product.getMale())
+                .category(product.getCategory())
+                .company(product.getCompany())
+                .sale(product.getSale())
+                .reviews(product.getReviews())
                 .build();
     }
 }

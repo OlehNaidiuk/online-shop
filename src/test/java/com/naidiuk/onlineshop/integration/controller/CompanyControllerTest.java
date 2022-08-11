@@ -2,6 +2,7 @@ package com.naidiuk.onlineshop.integration.controller;
 
 import com.naidiuk.onlineshop.controller.CompanyController;
 import com.naidiuk.onlineshop.dto.CompanyDto;
+import com.naidiuk.onlineshop.error.CompanyNotFoundException;
 import com.naidiuk.onlineshop.service.CompanyService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -43,5 +45,39 @@ class CompanyControllerTest {
                 .andDo(print())
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$").value(hasSize(companiesDto.size())));
+    }
+
+    @Test
+    void findAllProductsByCompanyId() throws Exception {
+        //prepare
+        CompanyDto companyDto = CompanyDto.builder()
+                                        .companyId(1L)
+                                        .products(new ArrayList<>())
+                                        .build();
+
+        doReturn(companyDto).when(companyService).findById(1L);
+
+        //then
+        mockMvc.perform(get("/api/v1/companies/{id}/products", 1)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().is(200))
+                .andExpect(jsonPath("$.companyId").value(1))
+                .andExpect(jsonPath("$.products").value(companyDto.getProducts()));
+    }
+
+    @Test
+    void findAllProductsByWrongCompanyId() throws Exception {
+        //prepare
+        doThrow(new CompanyNotFoundException("Company with id=11 not found."))
+                .when(companyService).findById(11L);
+
+        //then
+        mockMvc.perform(get("/api/v1/companies/{id}/products", 11)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().is(404))
+                .andExpect(jsonPath("$.statusCode").value(404))
+                .andExpect(jsonPath("$.message").value("Company with id=11 not found."));
     }
 }

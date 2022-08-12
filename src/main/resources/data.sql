@@ -1,11 +1,11 @@
-INSERT INTO category (category_id, category_name, catalog) VALUES (DEFAULT, 'футболка', 'одяг');
-INSERT INTO category (category_id, category_name, catalog) VALUES (DEFAULT, 'куртка', 'одяг');
-INSERT INTO category (category_id, category_name, catalog) VALUES (DEFAULT, 'джинси', 'одяг');
-INSERT INTO category (category_id, category_name, catalog) VALUES (DEFAULT, 'кофта', 'одяг');
-INSERT INTO category (category_id, category_name, catalog) VALUES (DEFAULT, 'сандалі', 'взуття');
-INSERT INTO category (category_id, category_name, catalog) VALUES (DEFAULT, 'кеди', 'взуття');
-INSERT INTO category (category_id, category_name, catalog) VALUES (DEFAULT, 'кросівки', 'взуття');
-INSERT INTO category (category_id, category_name, catalog) VALUES (DEFAULT, 'ремінь', 'аксесуари');
+INSERT INTO category (category_id, category_name, catalog_type) VALUES (DEFAULT, 'футболка', 'CLOTHES');
+INSERT INTO category (category_id, category_name, catalog_type) VALUES (DEFAULT, 'куртка', 'CLOTHES');
+INSERT INTO category (category_id, category_name, catalog_type) VALUES (DEFAULT, 'джинси', 'CLOTHES');
+INSERT INTO category (category_id, category_name, catalog_type) VALUES (DEFAULT, 'кофта', 'CLOTHES');
+INSERT INTO category (category_id, category_name, catalog_type) VALUES (DEFAULT, 'сандалі', 'FOOTWEAR');
+INSERT INTO category (category_id, category_name, catalog_type) VALUES (DEFAULT, 'кеди', 'FOOTWEAR');
+INSERT INTO category (category_id, category_name, catalog_type) VALUES (DEFAULT, 'кросівки', 'FOOTWEAR');
+INSERT INTO category (category_id, category_name, catalog_type) VALUES (DEFAULT, 'ремінь', 'ACCESSORIES');
 
 INSERT INTO company (company_id, company_name) VALUES (DEFAULT, 'BOSS');
 INSERT INTO company (company_id, company_name) VALUES (DEFAULT, 'NIKE');

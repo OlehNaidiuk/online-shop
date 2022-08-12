@@ -1,9 +1,5 @@
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/online_shop
-    driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: Jktu310590
+  profiles.active: dev
 
 logging:
   level:

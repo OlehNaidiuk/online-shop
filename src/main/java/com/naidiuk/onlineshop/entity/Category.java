@@ -1,19 +1,18 @@
 package com.naidiuk.onlineshop.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 @Builder
 @Table(name = "category")
 public class Category {
@@ -26,15 +25,18 @@ public class Category {
     @Enumerated(EnumType.STRING)
     @Column(name = "catalog_type")
     private CatalogType catalogType;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
             name = "category_size",
             joinColumns = @JoinColumn(name = "category_id"),
             inverseJoinColumns = @JoinColumn(name = "size_id")
     )
-    @JsonManagedReference
-    private List<Size> sizes;
+    @Builder.Default
+    private List<Size> sizes = new ArrayList<>();
     @OneToMany(mappedBy = "category")
-    @JsonBackReference
-    private List<Product> products;
+    @Builder.Default
+    private List<Product> products = new ArrayList<>();
 }
+
+
+

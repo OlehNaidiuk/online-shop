@@ -1,6 +1,5 @@
 package com.naidiuk.onlineshop.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,17 +32,14 @@ public class Product {
     private Male male;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
-    @JsonManagedReference
     private Category category;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", nullable = false)
-    @JsonManagedReference
     private Company company;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sale_id")
-    @JsonManagedReference
     private Sale sale;
     @OneToMany(mappedBy = "product")
-    @JsonManagedReference
+    @Builder.Default
     private List<Review> reviews = new ArrayList<>();
 }

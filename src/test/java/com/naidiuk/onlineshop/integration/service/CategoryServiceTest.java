@@ -12,7 +12,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
-@Transactional
 class CategoryServiceTest {
     @Autowired
     private CategoryService categoryService;

@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,9 +27,9 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CompanyProductsDto findById(Long companyId) {
-        Optional<Company> companyOptional = companyRepository.findById(companyId);
-        Company company = companyOptional.orElseThrow(() ->
-                new CompanyNotFoundException("Company with id=" + companyId + " not found."));
+        Company company = companyRepository.findById(companyId)
+                            .orElseThrow(() ->
+                            new CompanyNotFoundException("Company with id=" + companyId + " not found."));
         return CompanyMapper.transformToDtoWithProducts(company);
     }
 }

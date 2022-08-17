@@ -1,6 +1,7 @@
 package com.naidiuk.onlineshop.modular.service;
 
 import com.naidiuk.onlineshop.dto.CompanyDto;
+import com.naidiuk.onlineshop.dto.CompanyProductsDto;
 import com.naidiuk.onlineshop.entity.Company;
 import com.naidiuk.onlineshop.error.CompanyNotFoundException;
 import com.naidiuk.onlineshop.repository.CompanyRepository;
@@ -32,7 +33,7 @@ class CompanyServiceTest {
     }
 
     @Test
-    void testFindAll() {
+    void testFindAllWithoutProducts() {
         //prepare
         Company first = mock(Company.class);
         List<Company> companies = new ArrayList<>();
@@ -50,7 +51,7 @@ class CompanyServiceTest {
     }
 
     @Test
-    void testFindById() {
+    void testFindByIdWithProducts() {
         //prepare
         Long companyId = 1L;
         Company company = Company.builder()
@@ -61,15 +62,16 @@ class CompanyServiceTest {
         doReturn(companyOptional).when(mockedCompanyRepository).findById(companyId);
 
         //when
-        CompanyDto companyDto = companyService.findById(companyId);
+        CompanyProductsDto companyProductsDto = companyService.findById(companyId);
 
         //then
-        assertNotNull(companyDto);
-        assertEquals(1L, companyDto.getCompanyId());
+        assertNotNull(companyProductsDto);
+        assertEquals(1L, companyProductsDto.getCompanyId());
+        assertNotNull(companyProductsDto.getProducts());
     }
 
     @Test
-    void testFindByWrongId() {
+    void testFindByWrongIdWithProducts() {
         //prepare
         Long wrongCompanyId = 11L;
 

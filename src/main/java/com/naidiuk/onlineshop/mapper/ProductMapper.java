@@ -1,10 +1,14 @@
 package com.naidiuk.onlineshop.mapper;
 
 import com.naidiuk.onlineshop.dto.ProductDto;
+import com.naidiuk.onlineshop.dto.SaleDto;
 import com.naidiuk.onlineshop.entity.Product;
 
 public class ProductMapper {
+
     public static ProductDto transformToDto(Product product) {
+        SaleDto saleDto = SaleMapper.transformToDto(product.getSale());
+
         return ProductDto.builder()
                 .productId(product.getProductId())
                 .price(product.getPrice())
@@ -13,10 +17,7 @@ public class ProductMapper {
                 .name(product.getName())
                 .description(product.getDescription())
                 .male(product.getMale())
-                .category(product.getCategory())
-                .company(product.getCompany())
-                .sale(product.getSale())
-                .reviews(product.getReviews())
+                .sale(saleDto)
                 .build();
     }
 }

@@ -1,6 +1,5 @@
 package com.naidiuk.onlineshop.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,6 +23,6 @@ public class Company {
     @Column(name = "company_name")
     private String name;
     @OneToMany(mappedBy = "company")
-    @JsonBackReference
+    @Builder.Default
     private List<Product> products = new ArrayList<>();
 }

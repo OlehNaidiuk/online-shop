@@ -2,6 +2,7 @@ package com.naidiuk.onlineshop.integration.controller;
 
 import com.naidiuk.onlineshop.controller.CompanyController;
 import com.naidiuk.onlineshop.dto.CompanyDto;
+import com.naidiuk.onlineshop.dto.CompanyProductsDto;
 import com.naidiuk.onlineshop.error.CompanyNotFoundException;
 import com.naidiuk.onlineshop.service.CompanyService;
 import org.junit.jupiter.api.Test;
@@ -50,9 +51,8 @@ class CompanyControllerTest {
     @Test
     void findAllProductsByCompanyId() throws Exception {
         //prepare
-        CompanyDto companyDto = CompanyDto.builder()
+        CompanyProductsDto companyDto = CompanyProductsDto.builder()
                                         .companyId(1L)
-                                        .products(new ArrayList<>())
                                         .build();
 
         doReturn(companyDto).when(companyService).findById(1L);

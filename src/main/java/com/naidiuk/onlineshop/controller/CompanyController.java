@@ -1,8 +1,7 @@
 package com.naidiuk.onlineshop.controller;
 
-import com.naidiuk.onlineshop.controller.report.ErrorReport;
 import com.naidiuk.onlineshop.dto.CompanyDto;
-import com.naidiuk.onlineshop.error.CompanyNotFoundException;
+import com.naidiuk.onlineshop.dto.CompanyProductsDto;
 import com.naidiuk.onlineshop.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,12 +42,7 @@ public class CompanyController {
                 , request.getRemoteAddr()
                 , request.getRequestURI()
                 , request.getQueryString());
-        try {
-            CompanyDto companyDto = companyService.findById(id);
-            return ResponseEntity.status(HttpStatus.OK).body(companyDto);
-        } catch (CompanyNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                .body(new ErrorReport(HttpStatus.NOT_FOUND.value(), e.getMessage()));
-        }
+        CompanyProductsDto companyProductsDto = companyService.findById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(companyProductsDto);
     }
 }

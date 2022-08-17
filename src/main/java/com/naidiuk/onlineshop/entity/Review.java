@@ -1,16 +1,17 @@
 package com.naidiuk.onlineshop.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
-@Setter
+@AllArgsConstructor
 @Getter
+@Builder
 @Table(name = "review")
 public class Review {
     @Id
@@ -18,8 +19,7 @@ public class Review {
     private Long reviewId;
     @Column(name = "review_value")
     private String value;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
-    @JsonBackReference
     private Product product;
 }

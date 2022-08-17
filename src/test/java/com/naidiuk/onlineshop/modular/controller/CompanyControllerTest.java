@@ -2,6 +2,7 @@ package com.naidiuk.onlineshop.modular.controller;
 
 import com.naidiuk.onlineshop.controller.CompanyController;
 import com.naidiuk.onlineshop.dto.CompanyDto;
+import com.naidiuk.onlineshop.dto.CompanyProductsDto;
 import com.naidiuk.onlineshop.error.CompanyNotFoundException;
 import com.naidiuk.onlineshop.service.CompanyService;
 import org.junit.jupiter.api.Test;
@@ -48,16 +49,18 @@ class CompanyControllerTest {
     void testFindAllProductsByCompanyId() {
         //prepare
         Long companyId = 1L;
-        CompanyDto companyDto = CompanyDto.builder().companyId(companyId).build();
+        CompanyProductsDto companyProductsDto = CompanyProductsDto.builder()
+                                                                .companyId(companyId)
+                                                                .build();
 
-        doReturn(companyDto).when(mockedCompanyService).findById(companyId);
+        doReturn(companyProductsDto).when(mockedCompanyService).findById(companyId);
 
         //when
         ResponseEntity<?> responseEntity = companyController.findAllProductsByCompanyId(companyId, request);
 
         //then
         assertNotNull(responseEntity);
-        assertEquals(companyDto, responseEntity.getBody());
+        assertEquals(companyProductsDto, responseEntity.getBody());
     }
 
     @Test

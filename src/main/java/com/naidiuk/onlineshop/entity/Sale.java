@@ -1,19 +1,20 @@
 package com.naidiuk.onlineshop.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @NoArgsConstructor
-@Setter
+@AllArgsConstructor
 @Getter
+@Builder
 @Table(name = "sale")
 public class Sale {
     @Id
@@ -23,6 +24,6 @@ public class Sale {
     @Column(name = "sale_value")
     private BigDecimal value;
     @OneToMany(mappedBy = "sale")
-    @JsonBackReference
-    private List<Product> products;
+    @Builder.Default
+    private List<Product> products = new ArrayList<>();
 }

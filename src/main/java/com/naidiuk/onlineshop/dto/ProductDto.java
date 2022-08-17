@@ -1,15 +1,17 @@
 package com.naidiuk.onlineshop.dto;
 
-import com.naidiuk.onlineshop.entity.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.naidiuk.onlineshop.entity.Color;
+import com.naidiuk.onlineshop.entity.Male;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.util.Currency;
-import java.util.List;
 
 @Getter
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProductDto {
     private Long productId;
     private BigDecimal price;
@@ -18,8 +20,5 @@ public class ProductDto {
     private String name;
     private String description;
     private Male male;
-    private Category category;
-    private Company company;
-    private Sale sale;
-    private List<Review> reviews;
+    private SaleDto sale;
 }

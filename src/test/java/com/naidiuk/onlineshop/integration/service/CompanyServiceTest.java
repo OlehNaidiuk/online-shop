@@ -1,6 +1,7 @@
 package com.naidiuk.onlineshop.integration.service;
 
 import com.naidiuk.onlineshop.dto.CompanyDto;
+import com.naidiuk.onlineshop.dto.CompanyProductsDto;
 import com.naidiuk.onlineshop.dto.ProductDto;
 import com.naidiuk.onlineshop.error.CompanyNotFoundException;
 import com.naidiuk.onlineshop.service.CompanyService;
@@ -23,11 +24,9 @@ class CompanyServiceTest {
     void testFindAllWithoutProducts() {
         //when
         List<CompanyDto> companiesDto = companyService.findAll();
-        CompanyDto companyDto = companiesDto.get(2);
 
         //then
-        assertNotNull(companyDto);
-        assertNull(companyDto.getProducts());
+        assertNotNull(companiesDto);
     }
 
     @Test
@@ -36,13 +35,13 @@ class CompanyServiceTest {
         Long companyId = 1L;
 
         //when
-        CompanyDto companyDto = companyService.findById(companyId);
-        List<ProductDto> companyProductsDto = companyDto.getProducts();
+        CompanyProductsDto companyProductsDto = companyService.findById(companyId);
+        List<ProductDto> productsDto = companyProductsDto.getProducts();
 
         //then
-        assertNotNull(companyDto);
-        assertEquals(companyId, companyDto.getCompanyId());
-        assertFalse(companyProductsDto.isEmpty());
+        assertNotNull(companyProductsDto);
+        assertEquals(companyId, companyProductsDto.getCompanyId());
+        assertFalse(productsDto.isEmpty());
     }
 
     @Test

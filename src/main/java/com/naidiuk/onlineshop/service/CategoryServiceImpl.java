@@ -19,7 +19,7 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryDto> findAll() {
         List<Category> categories = categoryRepository.findAll();
         return categories.stream()
-                .map(CategoryMapper::transformToDto)
-                .collect(Collectors.toList());
+                        .map(CategoryMapper::transformToDto)
+                        .collect(Collectors.toList());
     }
 }

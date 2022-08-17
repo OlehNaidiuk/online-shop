@@ -1,6 +1,7 @@
 package com.naidiuk.onlineshop.service;
 
 import com.naidiuk.onlineshop.dto.CompanyDto;
+import com.naidiuk.onlineshop.dto.CompanyProductsDto;
 import com.naidiuk.onlineshop.entity.Company;
 import com.naidiuk.onlineshop.error.CompanyNotFoundException;
 import com.naidiuk.onlineshop.mapper.CompanyMapper;
@@ -21,15 +22,15 @@ public class CompanyServiceImpl implements CompanyService {
     public List<CompanyDto> findAll() {
         List<Company> companies = companyRepository.findAll();
         return companies.stream()
-                .map(CompanyMapper::transformToDtoWithoutProducts)
-                .collect(Collectors.toList());
+                        .map(CompanyMapper::transformToDto)
+                        .collect(Collectors.toList());
     }
 
     @Override
-    public CompanyDto findById(Long companyId) {
+    public CompanyProductsDto findById(Long companyId) {
         Optional<Company> companyOptional = companyRepository.findById(companyId);
         Company company = companyOptional.orElseThrow(() ->
                 new CompanyNotFoundException("Company with id=" + companyId + " not found."));
-        return CompanyMapper.transformToDto(company);
+        return CompanyMapper.transformToDtoWithProducts(company);
     }
 }

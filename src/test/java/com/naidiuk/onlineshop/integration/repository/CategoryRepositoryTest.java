@@ -54,6 +54,6 @@ class CategoryRepositoryTest {
         Optional<Category> categoryOptional = categoryRepository.findById(wrongCategoryId);
 
         //then
-//        assertTrue(categoryOptional.isEmpty());
+        assertTrue(categoryOptional.isEmpty());
     }
 }

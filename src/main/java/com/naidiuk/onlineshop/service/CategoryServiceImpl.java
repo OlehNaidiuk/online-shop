@@ -8,6 +8,7 @@ import com.naidiuk.onlineshop.mapper.CategoryMapper;
 import com.naidiuk.onlineshop.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +27,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CategoryProductsDto findById(Long categoryId) {
         String message = String.format("Category with id=%d not found.", categoryId);
         Category category = categoryRepository.findById(categoryId)

@@ -8,6 +8,7 @@ import com.naidiuk.onlineshop.mapper.CompanyMapper;
 import com.naidiuk.onlineshop.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +27,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CompanyProductsDto findById(Long companyId) {
         Company company = companyRepository.findById(companyId)
                             .orElseThrow(() ->

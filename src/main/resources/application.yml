@@ -1,11 +1,5 @@
 spring:
   profiles.active: dev
 
-logging:
-  level:
-    root: error
-    com.naidiuk.onlineshop.controller: info
-  file:
-    name: logs/online_shop.log
-  pattern:
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+nbu:
+  rates-url: https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json

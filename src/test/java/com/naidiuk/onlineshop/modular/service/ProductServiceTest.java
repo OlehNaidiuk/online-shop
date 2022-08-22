@@ -3,6 +3,7 @@ package com.naidiuk.onlineshop.modular.service;
 import com.naidiuk.onlineshop.dto.ProductDto;
 import com.naidiuk.onlineshop.entity.Product;
 import com.naidiuk.onlineshop.repository.ProductRepository;
+import com.naidiuk.onlineshop.service.CurrencyConverterService;
 import com.naidiuk.onlineshop.service.ProductService;
 import com.naidiuk.onlineshop.service.ProductServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,12 +23,14 @@ import static org.mockito.Mockito.*;
 class ProductServiceTest {
     @Mock
     private ProductRepository mockedProductRepository;
+    @Mock
+    private CurrencyConverterService mockedCurrencyConverterService;
 
     private ProductService productService;
 
     @BeforeEach
     void setUp() {
-        productService = new ProductServiceImpl(mockedProductRepository);
+        productService = new ProductServiceImpl(mockedProductRepository, mockedCurrencyConverterService);
     }
 
     @Test

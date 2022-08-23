@@ -1,6 +1,6 @@
 package com.naidiuk.onlineshop.service;
 
-import com.naidiuk.onlineshop.dto.NbuQuoteDto;
+import com.naidiuk.onlineshop.dto.NbuRateDto;
 import com.naidiuk.onlineshop.error.NbuException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -21,13 +21,13 @@ public class NbuServiceImpl implements NbuService {
     private final RestTemplate restTemplate;
 
     @Override
-    public List<NbuQuoteDto> getQuotes() {
+    public List<NbuRateDto> getRates() {
         try {
-            ResponseEntity<NbuQuoteDto[]> nbuResponse = restTemplate.getForEntity(nbuRatesUrl, NbuQuoteDto[].class);
+            ResponseEntity<NbuRateDto[]> nbuResponse = restTemplate.getForEntity(nbuRatesUrl, NbuRateDto[].class);
             if (nbuResponse.getBody() != null) {
                 return List.of(nbuResponse.getBody());
             }
-            return new ArrayList<>();
+            return Collections.emptyList();
         } catch (Exception e) {
             throw new NbuException("NBU error.", e);
         }

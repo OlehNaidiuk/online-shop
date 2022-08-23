@@ -1,7 +1,7 @@
 package com.naidiuk.onlineshop.modular.service;
 
-import com.naidiuk.onlineshop.dto.NbuQuoteDto;
-import com.naidiuk.onlineshop.error.NbuQuoteNotFoundException;
+import com.naidiuk.onlineshop.dto.NbuRateDto;
+import com.naidiuk.onlineshop.error.NbuRateNotFoundException;
 import com.naidiuk.onlineshop.service.CurrencyConverterService;
 import com.naidiuk.onlineshop.service.CurrencyConverterServiceImpl;
 import com.naidiuk.onlineshop.service.NbuService;
@@ -34,11 +34,11 @@ class CurrencyConverterServiceTest {
     @Test
     void shouldReturnPriceByCurrencyWhenConvertByCurrencyRate() {
         //prepare
-        NbuQuoteDto usdNbuQuote = NbuQuoteDto.builder()
+        NbuRateDto usdNbuRate = NbuRateDto.builder()
                                             .currencyCode("USD")
                                             .currencyRate(BigDecimal.valueOf(36.5686))
                                             .build();
-        NbuQuoteDto eurNbuQuote = NbuQuoteDto.builder()
+        NbuRateDto eurNbuRate = NbuRateDto.builder()
                                             .currencyCode("EUR")
                                             .currencyRate(BigDecimal.valueOf(36.9787))
                                             .build();
@@ -48,9 +48,9 @@ class CurrencyConverterServiceTest {
 
         BigDecimal price = BigDecimal.valueOf(1999.79);
 
-        List<NbuQuoteDto> nbuQuotes = List.of(usdNbuQuote, eurNbuQuote);
+        List<NbuRateDto> nbuRates = List.of(usdNbuRate, eurNbuRate);
 
-        doReturn(nbuQuotes).when(mockedNbuService).getQuotes();
+        doReturn(nbuRates).when(mockedNbuService).getRates();
 
         //when
         BigDecimal priceByUsd = currencyConverterService.convertTo(usd, price);
@@ -64,13 +64,13 @@ class CurrencyConverterServiceTest {
     @Test
     void shouldThrowNbuQuoteNotFoundExceptionWhenConvertToWrongCurrency() {
         //prepare
-        List<NbuQuoteDto> nbuQuotes = new ArrayList<>();
+        List<NbuRateDto> nbuRates = new ArrayList<>();
         Currency rub = Currency.getInstance("RUB");
         BigDecimal price = BigDecimal.valueOf(123.45);
 
-        doReturn(nbuQuotes).when(mockedNbuService).getQuotes();
+        doReturn(nbuRates).when(mockedNbuService).getRates();
 
         //then
-        assertThrows(NbuQuoteNotFoundException.class, () -> currencyConverterService.convertTo(rub, price));
+        assertThrows(NbuRateNotFoundException.class, () -> currencyConverterService.convertTo(rub, price));
     }
 }

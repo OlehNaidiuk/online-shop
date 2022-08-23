@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Getter
 @Builder
-public class NbuQuoteDto {
+public class NbuRateDto {
     @JsonProperty(value = "r030")
     private int currencyNumericCode;
     @JsonProperty(value = "txt")

@@ -1,6 +1,6 @@
 package com.naidiuk.onlineshop.integration.service;
 
-import com.naidiuk.onlineshop.dto.NbuQuoteDto;
+import com.naidiuk.onlineshop.dto.NbuRateDto;
 import com.naidiuk.onlineshop.service.NbuService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 class NbuServiceTest {
@@ -18,14 +18,13 @@ class NbuServiceTest {
     @Test
     void shouldReturnNbuQuotesWhenGetQuotes() {
         //when
-        List<NbuQuoteDto> nbuQuotesDto = nbuService.getQuotes();
-        NbuQuoteDto nbuQuoteDto = nbuQuotesDto.get(0);
+        List<NbuRateDto> nbuRatesDto = nbuService.getRates();
+        NbuRateDto nbuRateDto = nbuRatesDto.get(0);
 
         //then
-        assertNotEquals(0, nbuQuoteDto.getCurrencyNumericCode());
-        assertNotNull(nbuQuoteDto.getCurrencyLocalName());
-        assertNotNull(nbuQuoteDto.getCurrencyRate());
-        assertNotNull(nbuQuoteDto.getCurrencyCode());
-        assertNotNull(nbuQuoteDto.getExchangeDate());
+        assertNotNull(nbuRateDto.getCurrencyLocalName());
+        assertNotNull(nbuRateDto.getCurrencyRate());
+        assertNotNull(nbuRateDto.getCurrencyCode());
+        assertNotNull(nbuRateDto.getExchangeDate());
     }
 }

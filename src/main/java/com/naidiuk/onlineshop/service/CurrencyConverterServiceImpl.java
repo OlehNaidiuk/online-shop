@@ -1,7 +1,7 @@
 package com.naidiuk.onlineshop.service;
 
-import com.naidiuk.onlineshop.dto.NbuQuoteDto;
-import com.naidiuk.onlineshop.error.NbuQuoteNotFoundException;
+import com.naidiuk.onlineshop.dto.NbuRateDto;
+import com.naidiuk.onlineshop.error.NbuRateNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Currency;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -17,13 +18,19 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
 
     @Override
     public BigDecimal convertTo(Currency currency, BigDecimal price) {
-        List<NbuQuoteDto> nbuQuotes = nbuService.getQuotes();
-        for (NbuQuoteDto nbuQuote : nbuQuotes) {
-            if ((nbuQuote.getCurrencyCode()).equals(currency.getCurrencyCode())) {
-                return price.divide(nbuQuote.getCurrencyRate(), 2, RoundingMode.HALF_UP);
+        if (currency != null) {
+            List<NbuRateDto> nbuRates = nbuService.getRates();
+            if (nbuRates.isEmpty()) {
+                throw new NoSuchElementException("List of nbu rates is empty.");
             }
+            for (NbuRateDto nbuRate : nbuRates) {
+                if ((nbuRate.getCurrencyCode()).equals(currency.getCurrencyCode())) {
+                    return price.divide(nbuRate.getCurrencyRate(), 2, RoundingMode.HALF_UP);
+                }
+            }
+            String message = String.format("Nbu rate with currency=%s not found", currency.getCurrencyCode());
+            throw new NbuRateNotFoundException(message);
         }
-        String message = String.format("Nbu quote with currency=%s not found", currency.getCurrencyCode());
-        throw new NbuQuoteNotFoundException(message);
+        throw new IllegalArgumentException("Currency is null.");
     }
 }

@@ -18,19 +18,19 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
 
     @Override
     public BigDecimal convertTo(Currency currency, BigDecimal price) {
-        if (currency != null) {
-            List<NbuRateDto> nbuRates = nbuService.getRates();
-            if (nbuRates.isEmpty()) {
-                throw new NoSuchElementException("List of nbu rates is empty.");
-            }
-            for (NbuRateDto nbuRate : nbuRates) {
-                if ((nbuRate.getCurrencyCode()).equals(currency.getCurrencyCode())) {
-                    return price.divide(nbuRate.getCurrencyRate(), 2, RoundingMode.HALF_UP);
-                }
-            }
-            String message = String.format("Nbu rate with currency=%s not found", currency.getCurrencyCode());
-            throw new NbuRateNotFoundException(message);
+        if (currency == null) {
+            throw new IllegalArgumentException("Currency is null.");
         }
-        throw new IllegalArgumentException("Currency is null.");
+        List<NbuRateDto> nbuRates = nbuService.getRates();
+        if (nbuRates.isEmpty()) {
+            throw new NoSuchElementException("List of nbu rates is empty.");
+        }
+        for (NbuRateDto nbuRate : nbuRates) {
+            if ((nbuRate.getCurrencyCode()).equals(currency.getCurrencyCode())) {
+                return price.divide(nbuRate.getCurrencyRate(), 2, RoundingMode.HALF_UP);
+            }
+        }
+        String message = String.format("Nbu rate with currency=%s not found", currency.getCurrencyCode());
+        throw new NbuRateNotFoundException(message);
     }
 }

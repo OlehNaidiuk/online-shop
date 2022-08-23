@@ -7,6 +7,8 @@ import com.naidiuk.onlineshop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
+    private final CurrencyConverterService currencyConverterService;
 
     @Override
     public List<ProductDto> findTenRandom() {
@@ -21,5 +24,21 @@ public class ProductServiceImpl implements ProductService {
         return tenRandomProducts.stream()
                                 .map(ProductMapper::transformToDto)
                                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ProductDto convertPriceByCurrency(Currency currency, ProductDto productDto) {
+        BigDecimal productPriceByCurrency = currencyConverterService.convertTo(currency, productDto.getPrice());
+
+        return ProductDto.builder()
+                .productId(productDto.getProductId())
+                .price(productPriceByCurrency)
+                .currency(currency)
+                .color(productDto.getColor())
+                .name(productDto.getName())
+                .description(productDto.getDescription())
+                .male(productDto.getMale())
+                .sale(productDto.getSale())
+                .build();
     }
 }

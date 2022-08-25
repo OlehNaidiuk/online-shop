@@ -1,25 +1,24 @@
-package com.naidiuk.onlineshop.integration.service;
+package com.naidiuk.onlineshop.integration.service.cache;
 
 import com.naidiuk.onlineshop.dto.NbuRateDto;
-import com.naidiuk.onlineshop.service.NbuService;
+import com.naidiuk.onlineshop.service.cache.NbuServiceCache;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class NbuServiceTest {
+class NbuServiceCacheTest {
     @Autowired
-    private NbuService nbuService;
+    private NbuServiceCache nbuServiceCache;
 
     @Test
-    void shouldReturnNbuQuotesWhenGetQuotes() {
+    void shouldReturnNbuRatesWhenGetRates() {
         //when
-        Map<String, NbuRateDto> nbuRates = nbuService.getRates();
+        Map<String, NbuRateDto> nbuRates = nbuServiceCache.getRates();
         NbuRateDto usdNbuRate = nbuRates.get("USD");
 
         //then

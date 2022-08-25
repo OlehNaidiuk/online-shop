@@ -12,9 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Currency;
-import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -48,7 +47,8 @@ class CurrencyConverterServiceTest {
 
         BigDecimal price = BigDecimal.valueOf(1999.79);
 
-        List<NbuRateDto> nbuRates = List.of(usdNbuRate, eurNbuRate);
+        Map<String, NbuRateDto> nbuRates = Map.of(usdNbuRate.getCurrencyCode(), usdNbuRate,
+                                                eurNbuRate.getCurrencyCode(), eurNbuRate);
 
         doReturn(nbuRates).when(mockedNbuService).getRates();
 
@@ -62,9 +62,19 @@ class CurrencyConverterServiceTest {
     }
 
     @Test
+    void shouldThrowIllegalArgumentExceptionWhenCurrencyIsNull() {
+        //prepare
+        Currency nullableCurrency = null;
+        BigDecimal price = BigDecimal.valueOf(123.45);
+
+        //then
+        assertThrows(IllegalArgumentException.class, () -> currencyConverterService.convertTo(nullableCurrency, price));
+    }
+
+    @Test
     void shouldThrowNbuQuoteNotFoundExceptionWhenConvertToWrongCurrency() {
         //prepare
-        List<NbuRateDto> nbuRates = new ArrayList<>();
+        Map<String, NbuRateDto> nbuRates = Map.of("USD", NbuRateDto.builder().build());
         Currency rub = Currency.getInstance("RUB");
         BigDecimal price = BigDecimal.valueOf(123.45);
 

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Currency;
-import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @Service
@@ -21,16 +21,15 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
         if (currency == null) {
             throw new IllegalArgumentException("Currency is null.");
         }
-        List<NbuRateDto> nbuRates = nbuService.getRates();
+        Map<String, NbuRateDto> nbuRates = nbuService.getRates();
         if (nbuRates.isEmpty()) {
-            throw new NoSuchElementException("List of nbu rates is empty.");
+            throw new NoSuchElementException("Map of nbu rates is empty.");
         }
-        for (NbuRateDto nbuRate : nbuRates) {
-            if ((nbuRate.getCurrencyCode()).equals(currency.getCurrencyCode())) {
-                return price.divide(nbuRate.getCurrencyRate(), 2, RoundingMode.HALF_UP);
-            }
+        NbuRateDto nbuRate = nbuRates.get(currency.getCurrencyCode());
+        if (nbuRate == null) {
+            String message = String.format("Nbu rate with currency=%s not found", currency.getCurrencyCode());
+            throw new NbuRateNotFoundException(message);
         }
-        String message = String.format("Nbu rate with currency=%s not found", currency.getCurrencyCode());
-        throw new NbuRateNotFoundException(message);
+        return price.divide(nbuRate.getCurrencyRate(), 2, RoundingMode.HALF_UP);
     }
 }

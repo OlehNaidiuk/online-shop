@@ -1,9 +1,6 @@
 package com.naidiuk.onlineshop.mapper;
 
-import com.naidiuk.onlineshop.dto.CategoryDto;
-import com.naidiuk.onlineshop.dto.CategoryProductsDto;
-import com.naidiuk.onlineshop.dto.ProductDto;
-import com.naidiuk.onlineshop.dto.SizeDto;
+import com.naidiuk.onlineshop.dto.*;
 import com.naidiuk.onlineshop.entity.Category;
 import com.naidiuk.onlineshop.entity.Product;
 import com.naidiuk.onlineshop.entity.Size;
@@ -37,6 +34,28 @@ public class CategoryMapper {
                 .catalogType(category.getCatalogType())
                 .sizes(sizesDto)
                 .products(productsDto)
+                .build();
+    }
+
+    public static CategorySizesDto transformToDtoWithSizes(Category category) {
+        List<Size> sizes = category.getSizes();
+        List<SizeDto> sizesDto = sizes.stream()
+                                    .map(SizeMapper::transformToDto)
+                                    .collect(Collectors.toList());
+
+        return CategorySizesDto.builder()
+                .categoryId(category.getCategoryId())
+                .name(category.getName())
+                .catalogType(category.getCatalogType())
+                .sizes(sizesDto)
+                .build();
+    }
+
+    public static Category transformToDao(CategoryDto categoryDto) {
+        return Category.builder()
+                .categoryId(categoryDto.getCategoryId())
+                .name(categoryDto.getName())
+                .catalogType(categoryDto.getCatalogType())
                 .build();
     }
 }

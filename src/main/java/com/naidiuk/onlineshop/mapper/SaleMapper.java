@@ -6,7 +6,7 @@ import com.naidiuk.onlineshop.entity.Sale;
 public class SaleMapper {
     public static SaleDto transformToDto(Sale sale) {
         if (sale == null) {
-            return SaleDto.builder().build();
+            return null;
         }
         return SaleDto.builder()
                 .saleId(sale.getSaleId())

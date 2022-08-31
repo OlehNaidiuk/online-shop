@@ -1,6 +1,5 @@
 package com.naidiuk.onlineshop.integration.service;
 
-import com.naidiuk.onlineshop.dto.CategoryDto;
 import com.naidiuk.onlineshop.dto.ProductCategorySizesDto;
 import com.naidiuk.onlineshop.dto.ProductDto;
 import com.naidiuk.onlineshop.dto.SizeDto;
@@ -17,26 +16,24 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(properties = "spring.jpa.properties.hibernate.enable_lazy_load_no_trans=true")
+@SpringBootTest
 class ProductServiceTest {
     @Autowired
     private ProductService productService;
 
-    private List<CategoryDto> categoriesDto;
-    private List<SizeDto> sizesDto;
+    private List<Long> categoryIds;
+    private List<Long> sizeIds;
     private List<Color> colors;
-    private BigDecimal minPrice;
-    private BigDecimal maxPrice;
+    private int minPrice;
+    private int maxPrice;
 
     @BeforeEach
     void setUp() {
-        categoriesDto = List.of(CategoryDto.builder().categoryId(3L).build());
-        sizesDto = List.of(SizeDto.builder().sizeId(8L).build(),
-                            SizeDto.builder().sizeId(9L).build(),
-                            SizeDto.builder().sizeId(10L).build());
+        categoryIds = List.of(3L);
+        sizeIds = List.of(8L, 9L, 10L);
         colors = List.of(Color.BLACK);
-        minPrice = BigDecimal.valueOf(700);
-        maxPrice = BigDecimal.valueOf(1500);
+        minPrice = 700;
+        maxPrice = 1500;
     }
 
     @Test
@@ -54,28 +51,27 @@ class ProductServiceTest {
         //prepare
         Long expectedCategoryId = 3L;
         Color expectedColor = Color.BLACK;
-        List<Long> actualSizeIds = List.of(8L, 9L, 10L);
-        int bottomPriceRange = minPrice.intValue();
-        int topPriceRange = maxPrice.intValue();
+        List<Long> actualSizeIds = sizeIds;
+        int bottomPriceRange = minPrice;
+        int topPriceRange = maxPrice;
 
         //when
         List<ProductCategorySizesDto> filteredProductsDto =
-                productService.findAllByFilters(categoriesDto, colors, sizesDto, minPrice, maxPrice);
+                productService.findAllByFilters(categoryIds, sizeIds, colors, minPrice, maxPrice);
 
         //then
         for (ProductCategorySizesDto filteredProduct : filteredProductsDto) {
             Long categoryIdOfFilteredProduct = filteredProduct.getCategory().getCategoryId();
             Color colorOfFilteredProduct = filteredProduct.getColor();
-            List<Long> filteredProductSizeIds =
-                    filteredProduct.getCategory()
-                                    .getSizes().stream()
-                                                .map(SizeDto::getSizeId)
-                                                .collect(Collectors.toUnmodifiableList());
+            List<Long> filteredProductSizeIds = filteredProduct.getSizes().stream()
+                                                            .map(SizeDto::getSizeId)
+                                                            .collect(Collectors.toUnmodifiableList());
             int priceOfFilteredProduct = filteredProduct.getPrice().intValue();
 
             assertEquals(expectedCategoryId, categoryIdOfFilteredProduct);
             assertEquals(expectedColor, colorOfFilteredProduct);
-            assertTrue(filteredProductSizeIds.containsAll(actualSizeIds));
+            assertTrue(filteredProductSizeIds.stream()
+                                .anyMatch(sizeId -> actualSizeIds.contains(sizeId)));
             assertTrue(bottomPriceRange <= priceOfFilteredProduct);
             assertTrue(priceOfFilteredProduct <= topPriceRange);
         }
@@ -85,28 +81,27 @@ class ProductServiceTest {
     void shouldReturnAllProductMatchesWhenFindAllByFiltersWithoutCategories() {
         //prepare
         Color expectedColor = Color.BLACK;
-        List<Long> actualSizeIds = List.of(8L, 9L, 10L);
-        int bottomPriceRange = minPrice.intValue();
-        int topPriceRange = maxPrice.intValue();
+        List<Long> actualSizeIds = sizeIds;
+        int bottomPriceRange = minPrice;
+        int topPriceRange = maxPrice;
 
         //when
         List<ProductCategorySizesDto> filteredProductsDto =
-                productService.findAllByFilters(null, colors, sizesDto, minPrice, maxPrice);
+                productService.findAllByFilters(null, sizeIds, colors, minPrice, maxPrice);
 
         //then
         for (ProductCategorySizesDto filteredProduct : filteredProductsDto) {
             Long categoryIdOfFilteredProduct = filteredProduct.getCategory().getCategoryId();
             Color colorOfFilteredProduct = filteredProduct.getColor();
-            List<Long> filteredProductSizeIds =
-                    filteredProduct.getCategory()
-                                    .getSizes().stream()
-                                                .map(SizeDto::getSizeId)
-                                                .collect(Collectors.toUnmodifiableList());
+            List<Long> filteredProductSizeIds = filteredProduct.getSizes().stream()
+                                                            .map(SizeDto::getSizeId)
+                                                            .collect(Collectors.toUnmodifiableList());
             int priceOfFilteredProduct = filteredProduct.getPrice().intValue();
 
             assertNotNull(categoryIdOfFilteredProduct);
             assertEquals(expectedColor, colorOfFilteredProduct);
-            assertTrue(filteredProductSizeIds.containsAll(actualSizeIds));
+            assertTrue(filteredProductSizeIds.stream()
+                                .anyMatch(sizeId -> actualSizeIds.contains(sizeId)));
             assertTrue(bottomPriceRange <= priceOfFilteredProduct);
             assertTrue(priceOfFilteredProduct <= topPriceRange);
         }
@@ -116,28 +111,27 @@ class ProductServiceTest {
     void shouldReturnAllProductMatchesWhenFindAllByFiltersWithoutColors() {
         //prepare
         Long expectedCategoryId = 3L;
-        List<Long> actualSizeIds = List.of(8L, 9L, 10L);
-        int bottomPriceRange = minPrice.intValue();
-        int topPriceRange = maxPrice.intValue();
+        List<Long> actualSizeIds = sizeIds;
+        int bottomPriceRange = minPrice;
+        int topPriceRange = maxPrice;
 
         //when
         List<ProductCategorySizesDto> filteredProductsDto =
-                productService.findAllByFilters(categoriesDto, null, sizesDto, minPrice, maxPrice);
+                productService.findAllByFilters(categoryIds, sizeIds, null, minPrice, maxPrice);
 
         //then
         for (ProductCategorySizesDto filteredProduct : filteredProductsDto) {
             Long categoryIdOfFilteredProduct = filteredProduct.getCategory().getCategoryId();
             Color colorOfFilteredProduct = filteredProduct.getColor();
-            List<Long> filteredProductSizeIds =
-                    filteredProduct.getCategory()
-                                    .getSizes().stream()
-                                                .map(SizeDto::getSizeId)
-                                                .collect(Collectors.toUnmodifiableList());
+            List<Long> filteredProductSizeIds = filteredProduct.getSizes().stream()
+                                                            .map(SizeDto::getSizeId)
+                                                            .collect(Collectors.toUnmodifiableList());
             int priceOfFilteredProduct = filteredProduct.getPrice().intValue();
 
             assertEquals(expectedCategoryId, categoryIdOfFilteredProduct);
             assertNotNull(colorOfFilteredProduct);
-            assertTrue(filteredProductSizeIds.containsAll(actualSizeIds));
+            assertTrue(filteredProductSizeIds.stream()
+                                .anyMatch(sizeId -> actualSizeIds.contains(sizeId)));
             assertTrue(bottomPriceRange <= priceOfFilteredProduct);
             assertTrue(priceOfFilteredProduct <= topPriceRange);
         }
@@ -148,18 +142,18 @@ class ProductServiceTest {
         //prepare
         Long expectedCategoryId = 3L;
         Color expectedColor = Color.BLACK;
-        int bottomPriceRange = minPrice.intValue();
-        int topPriceRange = maxPrice.intValue();
+        int bottomPriceRange = minPrice;
+        int topPriceRange = maxPrice;
 
         //when
         List<ProductCategorySizesDto> filteredProductsDto =
-                productService.findAllByFilters(categoriesDto, colors, null, minPrice, maxPrice);
+                productService.findAllByFilters(categoryIds, null, colors, minPrice, maxPrice);
 
         //then
         for (ProductCategorySizesDto filteredProduct : filteredProductsDto) {
             Long categoryIdOfFilteredProduct = filteredProduct.getCategory().getCategoryId();
             Color colorOfFilteredProduct = filteredProduct.getColor();
-            List<SizeDto> filteredProductSizes = filteredProduct.getCategory().getSizes();
+            List<SizeDto> filteredProductSizes = filteredProduct.getSizes();
             int priceOfFilteredProduct = filteredProduct.getPrice().intValue();
 
             assertEquals(expectedCategoryId, categoryIdOfFilteredProduct);
@@ -175,27 +169,27 @@ class ProductServiceTest {
         //prepare
         Long expectedCategoryId = 3L;
         Color expectedColor = Color.BLACK;
-        List<Long> actualSizeIds = List.of(8L, 9L, 10L);
-        int topPriceRange = maxPrice.intValue();
+        List<Long> actualSizeIds = sizeIds;
+        int defaultValueForMinPrice = 0;
+        int topPriceRange = maxPrice;
 
         //when
         List<ProductCategorySizesDto> filteredProductsDto =
-                productService.findAllByFilters(categoriesDto, colors, sizesDto, null, maxPrice);
+                productService.findAllByFilters(categoryIds, sizeIds, colors, defaultValueForMinPrice, maxPrice);
 
         //then
         for (ProductCategorySizesDto filteredProduct : filteredProductsDto) {
             Long categoryIdOfFilteredProduct = filteredProduct.getCategory().getCategoryId();
             Color colorOfFilteredProduct = filteredProduct.getColor();
-            List<Long> filteredProductSizeIds =
-                    filteredProduct.getCategory()
-                                    .getSizes().stream()
-                                                .map(SizeDto::getSizeId)
-                                                .collect(Collectors.toUnmodifiableList());
+            List<Long> filteredProductSizeIds = filteredProduct.getSizes().stream()
+                                                            .map(SizeDto::getSizeId)
+                                                            .collect(Collectors.toUnmodifiableList());
             int priceOfFilteredProduct = filteredProduct.getPrice().intValue();
 
             assertEquals(expectedCategoryId, categoryIdOfFilteredProduct);
             assertEquals(expectedColor, colorOfFilteredProduct);
-            assertTrue(filteredProductSizeIds.containsAll(actualSizeIds));
+            assertTrue(filteredProductSizeIds.stream()
+                                .anyMatch(sizeId -> actualSizeIds.contains(sizeId)));
             assertTrue(priceOfFilteredProduct <= topPriceRange);
         }
     }
@@ -205,27 +199,27 @@ class ProductServiceTest {
         //prepare
         Long expectedCategoryId = 3L;
         Color expectedColor = Color.BLACK;
-        List<Long> actualSizeIds = List.of(8L, 9L, 10L);
-        int bottomPriceRange = minPrice.intValue();
+        List<Long> actualSizeIds = sizeIds;
+        int bottomPriceRange = minPrice;
+        int defaultValueForMaxPrice = 100000;
 
         //when
         List<ProductCategorySizesDto> filteredProductsDto =
-                productService.findAllByFilters(categoriesDto, colors, sizesDto, minPrice, null);
+                productService.findAllByFilters(categoryIds, sizeIds, colors, minPrice, defaultValueForMaxPrice);
 
         //then
         for (ProductCategorySizesDto filteredProduct : filteredProductsDto) {
             Long categoryIdOfFilteredProduct = filteredProduct.getCategory().getCategoryId();
             Color colorOfFilteredProduct = filteredProduct.getColor();
-            List<Long> filteredProductSizeIds =
-                    filteredProduct.getCategory()
-                            .getSizes().stream()
-                            .map(SizeDto::getSizeId)
-                            .collect(Collectors.toUnmodifiableList());
+            List<Long> filteredProductSizeIds = filteredProduct.getSizes().stream()
+                                                            .map(SizeDto::getSizeId)
+                                                            .collect(Collectors.toUnmodifiableList());
             int priceOfFilteredProduct = filteredProduct.getPrice().intValue();
 
             assertEquals(expectedCategoryId, categoryIdOfFilteredProduct);
             assertEquals(expectedColor, colorOfFilteredProduct);
-            assertTrue(filteredProductSizeIds.containsAll(actualSizeIds));
+            assertTrue(filteredProductSizeIds.stream()
+                                .anyMatch(sizeId -> actualSizeIds.contains(sizeId)));
             assertTrue(bottomPriceRange <= priceOfFilteredProduct);
         }
     }
@@ -233,27 +227,27 @@ class ProductServiceTest {
     @Test
     void shouldReturnAllProductMatchesWhenFindAllByFiltersWithoutCategoriesAndColorsAndMaxPrice() {
         //prepare
-        List<Long> actualSizeIds = List.of(8L, 9L, 10L);
-        int bottomPriceRange = minPrice.intValue();
+        List<Long> actualSizeIds = sizeIds;
+        int bottomPriceRange = minPrice;
+        int defaultValueForMaxPrice = 100000;
 
         //when
         List<ProductCategorySizesDto> filteredProductsDto =
-                productService.findAllByFilters(null, null, sizesDto, minPrice, null);
+                productService.findAllByFilters(null, sizeIds, null, minPrice, defaultValueForMaxPrice);
 
         //then
         for (ProductCategorySizesDto filteredProduct : filteredProductsDto) {
             Long categoryIdOfFilteredProduct = filteredProduct.getCategory().getCategoryId();
             Color colorOfFilteredProduct = filteredProduct.getColor();
-            List<Long> filteredProductSizeIds =
-                    filteredProduct.getCategory()
-                            .getSizes().stream()
-                            .map(SizeDto::getSizeId)
-                            .collect(Collectors.toUnmodifiableList());
+            List<Long> filteredProductSizeIds = filteredProduct.getSizes().stream()
+                                                            .map(SizeDto::getSizeId)
+                                                            .collect(Collectors.toUnmodifiableList());
             int priceOfFilteredProduct = filteredProduct.getPrice().intValue();
 
             assertNotNull(categoryIdOfFilteredProduct);
             assertNotNull(colorOfFilteredProduct);
-            assertTrue(filteredProductSizeIds.containsAll(actualSizeIds));
+            assertTrue(filteredProductSizeIds.stream()
+                                .anyMatch(sizeId -> actualSizeIds.contains(sizeId)));
             assertTrue(bottomPriceRange <= priceOfFilteredProduct);
         }
     }
@@ -262,17 +256,18 @@ class ProductServiceTest {
     void shouldReturnAllProductMatchesWhenFindAllByFiltersWithoutColorsAndSizesAndMinPrice() {
         //prepare
         Long expectedCategoryId = 3L;
-        int topPriceRange = maxPrice.intValue();
+        int topPriceRange = maxPrice;
+        int defaultValueForMinPrice = 0;
 
         //when
         List<ProductCategorySizesDto> filteredProductsDto =
-                productService.findAllByFilters(categoriesDto, null, null, null, maxPrice);
+                productService.findAllByFilters(categoryIds, null, null, defaultValueForMinPrice, maxPrice);
 
         //then
         for (ProductCategorySizesDto filteredProduct : filteredProductsDto) {
             Long categoryIdOfFilteredProduct = filteredProduct.getCategory().getCategoryId();
             Color colorOfFilteredProduct = filteredProduct.getColor();
-            List<SizeDto> filteredProductSizes = filteredProduct.getCategory().getSizes();
+            List<SizeDto> filteredProductSizes = filteredProduct.getSizes();
             int priceOfFilteredProduct = filteredProduct.getPrice().intValue();
 
             assertEquals(expectedCategoryId, categoryIdOfFilteredProduct);
@@ -284,15 +279,21 @@ class ProductServiceTest {
 
     @Test
     void shouldReturnAllProductMatchesWhenFindAllByFiltersWithoutAllFilters() {
+        //prepare
+        int defaultValueForMinPrice = 0;
+        int defaultValueForMaxPrice = 100000;
+
         //when
         List<ProductCategorySizesDto> filteredProductsDto =
-                productService.findAllByFilters(null, null, null, null, null);
+                productService.findAllByFilters(null, null, null,
+                                                defaultValueForMinPrice,
+                                                defaultValueForMaxPrice);
 
         //then
         for (ProductCategorySizesDto filteredProduct : filteredProductsDto) {
             Long categoryIdOfFilteredProduct = filteredProduct.getCategory().getCategoryId();
             Color colorOfFilteredProduct = filteredProduct.getColor();
-            List<SizeDto> filteredProductSizes = filteredProduct.getCategory().getSizes();
+            List<SizeDto> filteredProductSizes = filteredProduct.getSizes();
             BigDecimal priceOfFilteredProduct = filteredProduct.getPrice();
 
             assertNotNull(categoryIdOfFilteredProduct);

@@ -121,6 +121,95 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "GetAllProductsByCategoryId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/categories/7/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"categories",
+						"7",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllProductsByWrongCategoryId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/categories/12/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"categories",
+						"12",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllProductsByFilters",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/products?color=BLACK&size=12,15,19&category=5,6,7&minPrice=1000&maxPrice=2000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"products"
+					],
+					"query": [
+						{
+							"key": "color",
+							"value": "BLACK"
+						},
+						{
+							"key": "size",
+							"value": "12,15,19"
+						},
+						{
+							"key": "category",
+							"value": "5,6,7"
+						},
+						{
+							"key": "minPrice",
+							"value": "1000"
+						},
+						{
+							"key": "maxPrice",
+							"value": "2000"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

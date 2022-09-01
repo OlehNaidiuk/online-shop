@@ -20,7 +20,7 @@ public class CompanyMapper {
     public static CompanyProductsDto transformToDtoWithProducts(Company company) {
         List<ProductDto> productsDto = company.getProducts().stream()
                                             .map(ProductMapper::transformToDto)
-                                            .collect(Collectors.toList());;
+                                            .collect(Collectors.toList());
 
         return CompanyProductsDto.builder()
                 .companyId(company.getCompanyId())

@@ -54,11 +54,18 @@ CREATE TABLE IF NOT EXISTS product
         REFERENCES sale (sale_id)
 );
 
+CREATE TABLE IF NOT EXISTS product_size
+(
+    product_id bigint REFERENCES product (product_id),
+    size_id    bigint REFERENCES size (size_id)
+);
+
 CREATE TABLE IF NOT EXISTS review
 (
     review_id    bigint  NOT NULL GENERATED ALWAYS AS IDENTITY,
     product_id   bigint,
-    review_value varchar NOT NULL,    PRIMARY KEY (review_id),
+    review_value varchar NOT NULL,
+    PRIMARY KEY (review_id),
     FOREIGN KEY (product_id)
         REFERENCES product (product_id)
 );

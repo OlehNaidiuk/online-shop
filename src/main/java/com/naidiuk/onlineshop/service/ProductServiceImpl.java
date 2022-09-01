@@ -1,6 +1,9 @@
 package com.naidiuk.onlineshop.service;
 
+import com.naidiuk.onlineshop.dto.ProductFilterDto;
+import com.naidiuk.onlineshop.dto.ProductCategorySizesDto;
 import com.naidiuk.onlineshop.dto.ProductDto;
+import com.naidiuk.onlineshop.entity.Color;
 import com.naidiuk.onlineshop.entity.Product;
 import com.naidiuk.onlineshop.mapper.ProductMapper;
 import com.naidiuk.onlineshop.repository.ProductRepository;
@@ -12,6 +15,9 @@ import java.util.Currency;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.naidiuk.onlineshop.repository.specification.ProductSpecification.*;
+import static org.springframework.data.jpa.domain.Specification.where;
+
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
@@ -22,8 +28,8 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDto> findTenRandom() {
         List<Product> tenRandomProducts = productRepository.findTenRandom();
         return tenRandomProducts.stream()
-                                .map(ProductMapper::transformToDto)
-                                .collect(Collectors.toList());
+                .map(ProductMapper::transformToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -40,5 +46,24 @@ public class ProductServiceImpl implements ProductService {
                 .male(productDto.getMale())
                 .sale(productDto.getSale())
                 .build();
+    }
+
+    @Override
+    public List<ProductCategorySizesDto> findAllBy(ProductFilterDto productFilter) {
+        List<Long> categoryIds = productFilter.getCategories();
+        List<Long> sizeIds = productFilter.getSizes();
+        List<Color> colors = productFilter.getColors();
+        int minPrice = productFilter.getMinPrice();
+        int maxPrice = productFilter.getMaxPrice();
+
+        List<Product> products = productRepository.findAll(
+                                    where(filterByCategories(categoryIds))
+                                            .and(filterBySizes(sizeIds))
+                                            .and(filterByColors(colors))
+                                            .and(filterByPriceRange(minPrice, maxPrice)));
+
+        return products.stream()
+                .map(ProductMapper::transformToDtoWithCategoryAndSizes)
+                .collect(Collectors.toUnmodifiableList());
     }
 }

@@ -24,4 +24,7 @@ public class Size {
     @ManyToMany(mappedBy = "sizes")
     @Builder.Default
     private List<Category> categories = new ArrayList<>();
+    @ManyToMany(mappedBy = "sizes")
+    @Builder.Default
+    private List<Product> products = new ArrayList<>();
 }

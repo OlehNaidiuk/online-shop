@@ -5,8 +5,6 @@ import com.naidiuk.onlineshop.dto.CategoryProductsDto;
 import com.naidiuk.onlineshop.dto.ProductDto;
 import com.naidiuk.onlineshop.dto.SizeDto;
 import com.naidiuk.onlineshop.entity.Category;
-import com.naidiuk.onlineshop.entity.Product;
-import com.naidiuk.onlineshop.entity.Size;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,12 +20,10 @@ public class CategoryMapper {
     }
 
     public static CategoryProductsDto transformToDtoWithProducts(Category category) {
-        List<Product> products = category.getProducts();
-        List<ProductDto> productsDto = products.stream()
+        List<ProductDto> productsDto = category.getProducts().stream()
                                             .map(ProductMapper::transformToDto)
                                             .collect(Collectors.toList());
-        List<Size> sizes = category.getSizes();
-        List<SizeDto> sizesDto = sizes.stream()
+        List<SizeDto> sizesDto = category.getSizes().stream()
                                     .map(SizeMapper::transformToDto)
                                     .collect(Collectors.toList());
 

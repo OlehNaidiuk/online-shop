@@ -1,8 +1,10 @@
 package com.naidiuk.onlineshop.mapper;
 
-import com.naidiuk.onlineshop.dto.ProductDto;
-import com.naidiuk.onlineshop.dto.SaleDto;
+import com.naidiuk.onlineshop.dto.*;
 import com.naidiuk.onlineshop.entity.Product;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProductMapper {
 
@@ -17,6 +19,27 @@ public class ProductMapper {
                 .name(product.getName())
                 .description(product.getDescription())
                 .male(product.getMale())
+                .sale(saleDto)
+                .build();
+    }
+
+    public static ProductCategorySizesDto transformToDtoWithCategoryAndSizes(Product product) {
+        CategoryDto categoryDto = CategoryMapper.transformToDto(product.getCategory());
+        List<SizeDto> sizesDto = product.getSizes().stream()
+                                    .map(SizeMapper::transformToDto)
+                                    .collect(Collectors.toUnmodifiableList());
+        SaleDto saleDto = SaleMapper.transformToDto(product.getSale());
+
+        return ProductCategorySizesDto.builder()
+                .productId(product.getProductId())
+                .price(product.getPrice())
+                .currency(product.getCurrency())
+                .color(product.getColor())
+                .name(product.getName())
+                .description(product.getDescription())
+                .male(product.getMale())
+                .category(categoryDto)
+                .sizes(sizesDto)
                 .sale(saleDto)
                 .build();
     }

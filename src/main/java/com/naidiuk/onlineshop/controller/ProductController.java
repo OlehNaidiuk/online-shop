@@ -1,5 +1,7 @@
 package com.naidiuk.onlineshop.controller;
 
+import com.naidiuk.onlineshop.dto.ProductFilterDto;
+import com.naidiuk.onlineshop.dto.ProductCategorySizesDto;
 import com.naidiuk.onlineshop.dto.ProductDto;
 import com.naidiuk.onlineshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,18 @@ public class ProductController {
                 , request.getRequestURI()
                 , request.getQueryString());
         List<ProductDto> productsDto = productService.findTenRandom();
+        return ResponseEntity.status(HttpStatus.OK).body(productsDto);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> findAllBy(HttpServletRequest request, ProductFilterDto productFilter) {
+        log.info("Request URL: {}, Host: {}, Address: {}, Request URI: {}, Request params: {}."
+                , request.getRequestURL()
+                , request.getRemoteHost()
+                , request.getRemoteAddr()
+                , request.getRequestURI()
+                , request.getQueryString());
+        List<ProductCategorySizesDto> productsDto = productService.findAllBy(productFilter);
         return ResponseEntity.status(HttpStatus.OK).body(productsDto);
     }
 }

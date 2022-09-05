@@ -1,14 +1,17 @@
 package com.naidiuk.onlineshop.service;
 
-import com.naidiuk.onlineshop.dto.ProductFilterDto;
-import com.naidiuk.onlineshop.dto.ProductCategorySizesDto;
-import com.naidiuk.onlineshop.dto.ProductDto;
+import com.naidiuk.onlineshop.dto.*;
 import com.naidiuk.onlineshop.entity.Color;
 import com.naidiuk.onlineshop.entity.Product;
+import com.naidiuk.onlineshop.entity.Review;
+import com.naidiuk.onlineshop.error.ProductNotFoundException;
+import com.naidiuk.onlineshop.error.ReviewNotFoundException;
 import com.naidiuk.onlineshop.mapper.ProductMapper;
+import com.naidiuk.onlineshop.mapper.ReviewMapper;
 import com.naidiuk.onlineshop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -44,7 +47,6 @@ public class ProductServiceImpl implements ProductService {
                 .name(productDto.getName())
                 .description(productDto.getDescription())
                 .male(productDto.getMale())
-                .sale(productDto.getSale())
                 .build();
     }
 
@@ -65,5 +67,37 @@ public class ProductServiceImpl implements ProductService {
         return products.stream()
                 .map(ProductMapper::transformToDtoWithCategoryAndSizes)
                 .collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    public ProductReviewsDto saveProductReview(Long productId, ReviewDto reviewDto) {
+        Product product = findByIdWithReviews(productId);
+        Review productReview = ReviewMapper.transformToDao(reviewDto);
+        productReview.setProduct(product);
+        product.getReviews().add(productReview);
+        productRepository.save(product);
+        return ProductMapper.transformToDtoWithReviews(product);
+    }
+
+    @Override
+    @Transactional
+    public ProductReviewsDto deleteProductReview(Long productId, Long reviewId) {
+        Product product = findByIdWithReviews(productId);
+        Review reviewToBeDeleted = product.getReviews().stream()
+                                        .filter(review -> (review.getReviewId()).equals(reviewId))
+                                        .findFirst()
+                                        .orElseThrow(() ->
+                                                new ReviewNotFoundException(
+                                                        String.format("Review with id=%d not found", reviewId)));
+        product.getReviews().remove(reviewToBeDeleted);
+        reviewToBeDeleted.setProduct(null);
+        return ProductMapper.transformToDtoWithReviews(product);
+    }
+
+    private Product findByIdWithReviews(Long productId) {
+        return productRepository.findByIdWithReviews(productId)
+                            .orElseThrow(() ->
+                                    new ProductNotFoundException(
+                                            String.format("Product with id=%d not found", productId)));
     }
 }

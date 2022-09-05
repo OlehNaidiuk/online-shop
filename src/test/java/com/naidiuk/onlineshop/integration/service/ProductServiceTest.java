@@ -1,10 +1,9 @@
 package com.naidiuk.onlineshop.integration.service;
 
-import com.naidiuk.onlineshop.dto.ProductFilterDto;
-import com.naidiuk.onlineshop.dto.ProductCategorySizesDto;
-import com.naidiuk.onlineshop.dto.ProductDto;
-import com.naidiuk.onlineshop.dto.SizeDto;
+import com.naidiuk.onlineshop.dto.*;
 import com.naidiuk.onlineshop.entity.Color;
+import com.naidiuk.onlineshop.error.ProductNotFoundException;
+import com.naidiuk.onlineshop.error.ReviewNotFoundException;
 import com.naidiuk.onlineshop.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -344,5 +343,74 @@ class ProductServiceTest {
             assertEquals(0, productFilter.getMinPrice());
             assertEquals(100_000, productFilter.getMaxPrice());
         }
+    }
+
+    @Test
+    void shouldReturnProductWithNewReviewWhenSaveProductReview() {
+        //prepare
+        Long productId = 11L;
+        ReviewDto reviewDto = ReviewDto.builder()
+                                .value("New review")
+                                .build();
+
+        //when
+        ProductReviewsDto productReviewsDto = productService.saveProductReview(productId, reviewDto);
+        List<ReviewDto> reviewsDto = productReviewsDto.getReviews();
+        ReviewDto savedReview = reviewsDto.stream()
+                                    .filter(productReview -> (productReview.getValue()).equals(reviewDto.getValue()))
+                                    .findFirst()
+                                    .get();
+
+        //then
+        assertNotNull(savedReview.getReviewId());
+        assertEquals(reviewDto.getValue(), savedReview.getValue());
+    }
+
+    @Test
+    void shouldThrowProductNotFoundExceptionWhenSaveProductReviewWithWrongProductId() {
+        //prepare
+        Long wrongProductId = 111L;
+        ReviewDto reviewDto = ReviewDto.builder().build();
+
+        //then
+        assertThrows(ProductNotFoundException.class,
+                () -> productService.saveProductReview(wrongProductId, reviewDto));
+    }
+
+    @Test
+    void shouldReturnProductWithoutReviewToBeDeletedWhenDeleteProductReview() {
+        //prepare
+        Long productId = 1L;
+        Long reviewIdToBeDeleted = 1L;
+
+        //when
+        ProductReviewsDto productReviewsDto = productService.deleteProductReview(productId, reviewIdToBeDeleted);
+        List<ReviewDto> reviewsDto = productReviewsDto.getReviews();
+
+        //then
+        assertEquals(1, reviewsDto.size());
+        assertEquals(2L, reviewsDto.get(0).getReviewId());
+    }
+
+    @Test
+    void shouldThrowProductNotFoundExceptionWhenDeleteProductReviewWithWrongProductId() {
+        //prepare
+        Long wrongProductId = 111L;
+        Long reviewId = 1L;
+
+        //then
+        assertThrows(ProductNotFoundException.class,
+                () -> productService.deleteProductReview(wrongProductId, reviewId));
+    }
+
+    @Test
+    void shouldThrowProductNotFoundExceptionWhenDeleteProductReviewWithWrongReviewId() {
+        //prepare
+        Long productId = 1L;
+        Long wrongReviewId = 10L;
+
+        //then
+        assertThrows(ReviewNotFoundException.class,
+                () -> productService.deleteProductReview(productId, wrongReviewId));
     }
 }

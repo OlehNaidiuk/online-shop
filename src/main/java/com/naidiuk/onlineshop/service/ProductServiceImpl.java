@@ -75,8 +75,8 @@ public class ProductServiceImpl implements ProductService {
         Review productReview = ReviewMapper.transformToDao(reviewDto);
         productReview.setProduct(product);
         product.getReviews().add(productReview);
-        productRepository.save(product);
-        return ProductMapper.transformToDtoWithReviews(product);
+        Product savedProduct = productRepository.save(product);
+        return ProductMapper.transformToDtoWithReviews(savedProduct);
     }
 
     @Override

@@ -43,4 +43,21 @@ public class ProductMapper {
                 .sale(saleDto)
                 .build();
     }
+
+    public static ProductReviewsDto transformToDtoWithReviews(Product product) {
+        List<ReviewDto> reviewsDto = product.getReviews().stream()
+                                .map(ReviewMapper::transformToDto)
+                                .collect(Collectors.toUnmodifiableList());
+
+        return ProductReviewsDto.builder()
+                .productId(product.getProductId())
+                .price(product.getPrice())
+                .currency(product.getCurrency())
+                .color(product.getColor())
+                .name(product.getName())
+                .description(product.getDescription())
+                .male(product.getMale())
+                .reviews(reviewsDto)
+                .build();
+    }
 }

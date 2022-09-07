@@ -220,7 +220,6 @@ class ProductServiceTest {
             assertEquals(expectedColor, colorOfFilteredProduct);
             assertTrue(filteredProductSizeIds.stream()
                                 .anyMatch(sizeId -> actualSizeIds.contains(sizeId)));
-            assertEquals(0, productFilter.getMinPrice());
             assertTrue(priceOfFilteredProduct <= topPriceRange);
         }
     }
@@ -256,7 +255,6 @@ class ProductServiceTest {
             assertEquals(expectedColor, colorOfFilteredProduct);
             assertTrue(filteredProductSizeIds.stream()
                                 .anyMatch(sizeId -> actualSizeIds.contains(sizeId)));
-            assertEquals(100_000, productFilter.getMaxPrice());
             assertTrue(bottomPriceRange <= priceOfFilteredProduct);
         }
     }
@@ -288,7 +286,6 @@ class ProductServiceTest {
             assertNotNull(colorOfFilteredProduct);
             assertTrue(filteredProductSizeIds.stream()
                                 .anyMatch(sizeId -> actualSizeIds.contains(sizeId)));
-            assertEquals(100_000, productFilter.getMaxPrice());
             assertTrue(bottomPriceRange <= priceOfFilteredProduct);
         }
     }
@@ -317,7 +314,6 @@ class ProductServiceTest {
             assertEquals(expectedCategoryId, categoryIdOfFilteredProduct);
             assertNotNull(colorOfFilteredProduct);
             assertFalse(filteredProductSizes.isEmpty());
-            assertEquals(0, productFilter.getMinPrice());
             assertTrue(priceOfFilteredProduct <= topPriceRange);
         }
     }
@@ -341,8 +337,6 @@ class ProductServiceTest {
             assertNotNull(colorOfFilteredProduct);
             assertFalse(filteredProductSizes.isEmpty());
             assertNotNull(priceOfFilteredProduct);
-            assertEquals(0, productFilter.getMinPrice());
-            assertEquals(100_000, productFilter.getMaxPrice());
         }
     }
 }

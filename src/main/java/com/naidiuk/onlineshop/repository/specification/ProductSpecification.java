@@ -41,4 +41,13 @@ public class ProductSpecification {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.between(root.get("price"), minPrice, maxPrice);
     }
+
+    public static Specification<Product> filterByQuery(String searchingQuery) {
+        if (searchingQuery == null) {
+            return null;
+        }
+        String pattern = searchingQuery + "%";
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.like(root.get("name"), pattern);
+    }
 }

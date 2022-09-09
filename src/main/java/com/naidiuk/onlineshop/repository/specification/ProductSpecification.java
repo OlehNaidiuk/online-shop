@@ -46,8 +46,11 @@ public class ProductSpecification {
         if (searchingQuery == null) {
             return null;
         }
-        String pattern = searchingQuery + "%";
+        String pattern = "%" + searchingQuery.toLowerCase() + "%";
         return (root, query, criteriaBuilder) ->
-                criteriaBuilder.like(root.get("name"), pattern);
+                criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get("name")),
+                        pattern
+                );
     }
 }

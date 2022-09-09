@@ -319,6 +319,24 @@ class ProductServiceTest {
     }
 
     @Test
+    void shouldReturnAllProductMatchesWhenFindAllBySearchingQuery() {
+        //prepare
+        String query = "кур";
+        ProductFilterDto productFilter = ProductFilterDto.builder()
+                                                        .query(query)
+                                                        .build();
+
+        //when
+        List<ProductCategorySizesDto> filteredProductsDto = productService.findAllBy(productFilter);
+
+        //then
+        for (ProductCategorySizesDto filteredProduct : filteredProductsDto) {
+            String productName = filteredProduct.getName().toLowerCase();
+            assertTrue(productName.contains(query));
+        }
+    }
+
+    @Test
     void shouldReturnAllProductMatchesWhenFindAllByFiltersWithoutAllFilters() {
         //prepare
         ProductFilterDto productFilter = ProductFilterDto.builder().build();

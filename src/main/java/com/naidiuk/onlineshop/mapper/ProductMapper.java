@@ -68,6 +68,7 @@ public class ProductMapper {
                 .map(SizeMapper::transformToDto)
                 .collect(Collectors.toUnmodifiableList());
         SaleDto saleDto = SaleMapper.transformToDto(product.getSale());
+
         return ProductAllDto.builder()
                 .productId(product.getProductId())
                 .price(product.getPrice())
@@ -90,6 +91,7 @@ public class ProductMapper {
                                 .map(SizeMapper::transformToDao)
                                 .collect(Collectors.toUnmodifiableList());
         Sale sale = SaleMapper.transformToDao(productAllDto.getSale());
+
         return Product.builder()
                 .productId(productAllDto.getProductId())
                 .price(productAllDto.getPrice())
@@ -101,6 +103,7 @@ public class ProductMapper {
                 .category(category)
                 .sizes(sizes)
                 .company(company)
+                .sale(sale)
                 .build();
     }
 }

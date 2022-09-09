@@ -55,14 +55,22 @@ public class ProductServiceImpl implements ProductService {
         List<Long> categoryIds = productFilter.getCategories();
         List<Long> sizeIds = productFilter.getSizes();
         List<Color> colors = productFilter.getColors();
-        int minPrice = productFilter.getMinPrice();
-        int maxPrice = productFilter.getMaxPrice();
+        int minPrice = 0;
+        if (productFilter.getMinPrice() != null) {
+            minPrice = productFilter.getMinPrice();
+        }
+        int maxPrice = 100_000;
+        if (productFilter.getMaxPrice() != null) {
+            maxPrice = productFilter.getMaxPrice();
+        }
+        String query = productFilter.getQuery();
 
         List<Product> products = productRepository.findAll(
                                     where(filterByCategories(categoryIds))
                                             .and(filterBySizes(sizeIds))
                                             .and(filterByColors(colors))
-                                            .and(filterByPriceRange(minPrice, maxPrice)));
+                                            .and(filterByPriceRange(minPrice, maxPrice))
+                                            .and(filterByQuery(query)));
 
         return products.stream()
                 .map(ProductMapper::transformToDtoWithCategoryAndSizes)

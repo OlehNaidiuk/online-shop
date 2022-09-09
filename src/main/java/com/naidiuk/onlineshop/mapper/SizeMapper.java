@@ -11,4 +11,11 @@ public class SizeMapper {
                 .value(size.getValue())
                 .build();
     }
+
+    public static Size transformToDao(SizeDto sizeDto) {
+        return Size.builder()
+                .sizeId(sizeDto.getSizeId())
+                .value(sizeDto.getValue())
+                .build();
+    }
 }

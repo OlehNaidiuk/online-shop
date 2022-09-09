@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CompanyDto {
-    private Long companyId;
-    private String name;
+public class ReviewDto {
+    private Long reviewId;
+    private String value;
 }

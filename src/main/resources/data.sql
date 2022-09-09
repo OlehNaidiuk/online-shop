@@ -104,10 +104,10 @@ VALUES (DEFAULT, 6, 2, DEFAULT, 1111.55, 'UAH', 'BLACK', 'Кеди NIKE',
         'Кеди із колекції HUGO. Модель виготовлена із текстильного матеріалу.', 'WOMEN');
 INSERT INTO product (product_id, category_id, company_id, sale_id, price, currency, color, product_name, description, male)
 VALUES (DEFAULT, 7, 2, DEFAULT, 1231.99, 'UAH', 'GREEN', 'Кросівки NIKE',
-        'Кросівки із колекції HUGO. Модель виготовлена із текстильного матеріалу.', 'MEN');
+        'Кросівки із колекції NIKE. Модель виготовлена із текстильного матеріалу.', 'MEN');
 INSERT INTO product (product_id, category_id, company_id, sale_id, price, currency, color, product_name, description, male)
 VALUES (DEFAULT, 7, 2, DEFAULT, 1111.55, 'UAH', 'BLACK', 'Кросівки NIKE',
-        'Кросівки із колекції HUGO. Модель виготовлена із текстильного матеріалу.', 'WOMEN');
+        'Кросівки із колекції NIKE. Модель виготовлена із текстильного матеріалу.', 'WOMEN');
 INSERT INTO product (product_id, category_id, company_id, sale_id, price, currency, color, product_name, description, male)
 VALUES (DEFAULT, 4, 2, DEFAULT, 1231.99, 'UAH', 'WHITE', 'Кофта NIKE',
         'Кофта із колекції NIKE. Модель виготовлена із текстильного матеріалу.', 'MEN');

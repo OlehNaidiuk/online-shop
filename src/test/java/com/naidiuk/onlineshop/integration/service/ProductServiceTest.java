@@ -1,10 +1,9 @@
 package com.naidiuk.onlineshop.integration.service;
 
-import com.naidiuk.onlineshop.dto.ProductFilterDto;
-import com.naidiuk.onlineshop.dto.ProductCategorySizesDto;
-import com.naidiuk.onlineshop.dto.ProductDto;
-import com.naidiuk.onlineshop.dto.SizeDto;
+import com.naidiuk.onlineshop.dto.*;
 import com.naidiuk.onlineshop.entity.Color;
+import com.naidiuk.onlineshop.entity.Male;
+import com.naidiuk.onlineshop.error.ProductNotFoundException;
 import com.naidiuk.onlineshop.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -344,5 +344,103 @@ class ProductServiceTest {
             assertEquals(0, productFilter.getMinPrice());
             assertEquals(100_000, productFilter.getMaxPrice());
         }
+    }
+
+    @Test
+    void shouldReturnSavedProductWithIdWhenSaveProduct() {
+        //prepare
+        CategoryDto categoryDto = CategoryDto.builder().categoryId(2L).build();
+        CompanyDto companyDto = CompanyDto.builder().companyId(6L).build();
+        List<SizeDto> sizesDto = List.of(SizeDto.builder().sizeId(2L).build(),
+                                        SizeDto.builder().sizeId(3L).build(),
+                                        SizeDto.builder().sizeId(4L).build(),
+                                        SizeDto.builder().sizeId(5L).build());
+        ProductAllDto productAllDto = ProductAllDto.builder()
+                                                .price(BigDecimal.valueOf(4099.00))
+                                                .currency(Currency.getInstance("UAH"))
+                                                .color(Color.ORANGE)
+                                                .name("Куртка вельветова Levi's")
+                                                .description("Куртка із колекції Levi's." +
+                                                        " Злегка утеплена модель виготовлена з вельветового матеріалу.")
+                                                .male(Male.MEN)
+                                                .category(categoryDto)
+                                                .sizes(sizesDto)
+                                                .company(companyDto)
+                                                .build();
+
+        //when
+        ProductAllDto savedProductDto = productService.save(productAllDto);
+
+        List<Long> expectedSizeIds = sizesDto.stream()
+                                        .map(SizeDto::getSizeId)
+                                        .collect(Collectors.toUnmodifiableList());
+        List<Long> savedSizeIds = savedProductDto.getSizes().stream()
+                                        .map(SizeDto::getSizeId)
+                                        .collect(Collectors.toUnmodifiableList());
+
+        //then
+        assertNotNull(savedProductDto.getProductId());
+        assertSame(productAllDto.getColor(), savedProductDto.getColor());
+        assertEquals(productAllDto.getName(), savedProductDto.getName());
+        assertEquals(categoryDto.getCategoryId(), savedProductDto.getCategory().getCategoryId());
+        assertEquals(companyDto.getCompanyId(), savedProductDto.getCompany().getCompanyId());
+        assertTrue(expectedSizeIds.containsAll(savedSizeIds));
+    }
+
+    @Test
+    void shouldReturnUpdatedProductWhenUpdateProduct() {
+        //prepare
+        ProductDto productDtoToUpdate = ProductDto.builder()
+                                                .productId(1L)
+                                                .price(BigDecimal.valueOf(499.00))
+                                                .currency(Currency.getInstance("UAH"))
+                                                .color(Color.BLUE)
+                                                .name("Сандалі HUGO Jens Sand")
+                                                .description("Сандалі із колекції HUGO." +
+                                                        " Модель виготовлена із текстильного матеріалу.")
+                                                .male(Male.MEN)
+                                                .build();
+
+        //when
+        ProductDto updatedProductDto = productService.update(productDtoToUpdate);
+
+        //then
+        assertEquals(productDtoToUpdate.getProductId(), updatedProductDto.getProductId());
+        assertEquals(productDtoToUpdate.getPrice(), updatedProductDto.getPrice());
+        assertSame(productDtoToUpdate.getCurrency(), updatedProductDto.getCurrency());
+        assertSame(productDtoToUpdate.getColor(), updatedProductDto.getColor());
+        assertEquals(productDtoToUpdate.getName(), updatedProductDto.getName());
+        assertEquals(productDtoToUpdate.getDescription(), updatedProductDto.getDescription());
+        assertSame(productDtoToUpdate.getMale(), updatedProductDto.getMale());
+    }
+
+    @Test
+    void shouldThrowProductNotFoundExceptionWhenUpdateProductWithWrongId() {
+        //prepare
+        ProductDto productDtoToUpdateWithWrongId = ProductDto.builder().productId(111L).build();
+
+        //then
+        assertThrows(ProductNotFoundException.class, () -> productService.update(productDtoToUpdateWithWrongId));
+    }
+
+    @Test
+    void shouldReturnDeletedProductWhenDeleteById() {
+        //prepare
+        Long productIdToDelete = 22L;
+
+        //when
+        ProductDto deletedProductDto = productService.deleteById(productIdToDelete);
+
+        //then
+        assertEquals(productIdToDelete, deletedProductDto.getProductId());
+    }
+
+    @Test
+    void shouldThrowProductNotFoundExceptionWhenDeleteProductWithWrongId() {
+        //prepare
+        Long wrongProductIdToDelete = 111L;
+
+        //then
+        assertThrows(ProductNotFoundException.class, () -> productService.deleteById(wrongProductIdToDelete));
     }
 }

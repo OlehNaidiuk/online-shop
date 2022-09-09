@@ -1,14 +1,17 @@
 package com.naidiuk.onlineshop.service;
 
-import com.naidiuk.onlineshop.dto.ProductFilterDto;
+import com.naidiuk.onlineshop.dto.ProductAllDto;
 import com.naidiuk.onlineshop.dto.ProductCategorySizesDto;
 import com.naidiuk.onlineshop.dto.ProductDto;
+import com.naidiuk.onlineshop.dto.ProductFilterDto;
 import com.naidiuk.onlineshop.entity.Color;
 import com.naidiuk.onlineshop.entity.Product;
+import com.naidiuk.onlineshop.error.ProductNotFoundException;
 import com.naidiuk.onlineshop.mapper.ProductMapper;
 import com.naidiuk.onlineshop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -65,5 +68,41 @@ public class ProductServiceImpl implements ProductService {
         return products.stream()
                 .map(ProductMapper::transformToDtoWithCategoryAndSizes)
                 .collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    public ProductAllDto save(ProductAllDto productAllDto) {
+        Product product = ProductMapper.transformToDao(productAllDto);
+        Product savedProduct = productRepository.save(product);
+        return ProductMapper.transformToAllDto(savedProduct);
+    }
+
+    @Override
+    @Transactional
+    public ProductDto update(ProductDto productDtoToUpdate) {
+        Long productId = productDtoToUpdate.getProductId();
+        Product product = findById(productId);
+        product.setPrice(productDtoToUpdate.getPrice());
+        product.setCurrency(productDtoToUpdate.getCurrency());
+        product.setColor(productDtoToUpdate.getColor());
+        product.setName(productDtoToUpdate.getName());
+        product.setDescription(productDtoToUpdate.getDescription());
+        product.setMale(productDtoToUpdate.getMale());
+        return ProductMapper.transformToDto(product);
+    }
+
+    @Override
+    public ProductDto deleteById(Long productId) {
+        Product product = findById(productId);
+        ProductDto productDto = ProductMapper.transformToDto(product);
+        productRepository.deleteById(productId);
+        return productDto;
+    }
+
+    private Product findById(Long productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() ->
+                        new ProductNotFoundException(
+                                String.format("Product with id=%d not found.", productId)));
     }
 }

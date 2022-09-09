@@ -69,4 +69,40 @@ public class ProductController {
         ProductReviewsDto productReviewsDto = productService.deleteProductReview(productId, reviewId);
         return ResponseEntity.status(HttpStatus.OK).body(productReviewsDto);
     }
+
+    @PostMapping
+    public ResponseEntity<?> save(HttpServletRequest request, @RequestBody ProductAllDto productAllDto) {
+        log.info("Request URL: {}, Host: {}, Address: {}, Request URI: {}, Request params: {}."
+                , request.getRequestURL()
+                , request.getRemoteHost()
+                , request.getRemoteAddr()
+                , request.getRequestURI()
+                , request.getQueryString());
+        ProductAllDto savedProductDto = productService.save(productAllDto);
+        return ResponseEntity.status(HttpStatus.OK).body(savedProductDto);
+    }
+
+    @PutMapping
+    public ResponseEntity<?> update(HttpServletRequest request, @RequestBody ProductDto productDtoToUpdate) {
+        log.info("Request URL: {}, Host: {}, Address: {}, Request URI: {}, Request params: {}."
+                , request.getRequestURL()
+                , request.getRemoteHost()
+                , request.getRemoteAddr()
+                , request.getRequestURI()
+                , request.getQueryString());
+        ProductDto updatedProductDto = productService.update(productDtoToUpdate);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedProductDto);
+    }
+
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<?> delete(HttpServletRequest request, @PathVariable Long productId) {
+        log.info("Request URL: {}, Host: {}, Address: {}, Request URI: {}, Request params: {}."
+                , request.getRequestURL()
+                , request.getRemoteHost()
+                , request.getRemoteAddr()
+                , request.getRequestURI()
+                , request.getQueryString());
+        ProductDto deletedProductDto = productService.deleteById(productId);
+        return ResponseEntity.status(HttpStatus.OK).body(deletedProductDto);
+    }
 }

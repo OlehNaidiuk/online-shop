@@ -13,4 +13,14 @@ public class SaleMapper {
                 .value(sale.getValue())
                 .build();
     }
+
+    public static Sale transformToDao(SaleDto saleDto) {
+        if (saleDto == null) {
+            return null;
+        }
+        return Sale.builder()
+                .saleId(saleDto.getSaleId())
+                .value(saleDto.getValue())
+                .build();
+    }
 }

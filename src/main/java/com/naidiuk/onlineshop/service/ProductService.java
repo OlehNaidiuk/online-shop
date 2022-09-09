@@ -1,7 +1,6 @@
 package com.naidiuk.onlineshop.service;
 
 import com.naidiuk.onlineshop.dto.*;
-import com.naidiuk.onlineshop.entity.Product;
 
 import java.util.Currency;
 import java.util.List;
@@ -12,4 +11,7 @@ public interface ProductService {
     List<ProductCategorySizesDto> findAllBy(ProductFilterDto productFilter);
     ProductReviewsDto saveProductReview(Long productId, ReviewDto reviewDto);
     ProductReviewsDto deleteProductReview(Long productId, Long reviewId);
+    ProductAllDto save(ProductAllDto productAllDto);
+    ProductDto update(ProductDto productDtoToUpdate);
+    ProductDto deleteById(Long productId);
 }

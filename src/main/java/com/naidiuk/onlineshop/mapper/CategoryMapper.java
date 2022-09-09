@@ -35,4 +35,12 @@ public class CategoryMapper {
                 .products(productsDto)
                 .build();
     }
+
+    public static Category transformToDao(CategoryDto categoryDto) {
+        return Category.builder()
+                .categoryId(categoryDto.getCategoryId())
+                .name(categoryDto.getName())
+                .catalogType(categoryDto.getCatalogType())
+                .build();
+    }
 }

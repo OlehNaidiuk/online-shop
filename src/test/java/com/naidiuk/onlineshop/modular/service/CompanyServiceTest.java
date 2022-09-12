@@ -3,6 +3,7 @@ package com.naidiuk.onlineshop.modular.service;
 import com.naidiuk.onlineshop.dto.CompanyDto;
 import com.naidiuk.onlineshop.dto.CompanyProductsDto;
 import com.naidiuk.onlineshop.entity.Company;
+import com.naidiuk.onlineshop.entity.Product;
 import com.naidiuk.onlineshop.error.CompanyNotFoundException;
 import com.naidiuk.onlineshop.repository.CompanyRepository;
 import com.naidiuk.onlineshop.service.CompanyService;
@@ -53,13 +54,15 @@ class CompanyServiceTest {
     @Test
     void testFindByIdWithProducts() {
         //prepare
+        List<Product> products = List.of(Product.builder().build());
         Long companyId = 1L;
         Company company = Company.builder()
                                 .companyId(companyId)
+                                .products(products)
                                 .build();
         Optional<Company> companyOptional = Optional.of(company);
 
-        doReturn(companyOptional).when(mockedCompanyRepository).findById(companyId);
+        doReturn(companyOptional).when(mockedCompanyRepository).findByIdWithProducts(companyId);
 
         //when
         CompanyProductsDto companyProductsDto = companyService.findById(companyId);
@@ -67,7 +70,7 @@ class CompanyServiceTest {
         //then
         assertNotNull(companyProductsDto);
         assertEquals(1L, companyProductsDto.getCompanyId());
-        assertNotNull(companyProductsDto.getProducts());
+        assertFalse(companyProductsDto.getProducts().isEmpty());
     }
 
     @Test

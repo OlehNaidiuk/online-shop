@@ -57,14 +57,9 @@ class CategoryServiceTest {
     @Test
     void shouldGetCategoryWithSizesAndProductsWhenFindByCategoryId() {
         //prepare
+        List<Size> sizes = List.of(Size.builder().build());
+        List<Product> products = List.of(Product.builder().build());
         Long categoryId = 7L;
-        Size size = Size.builder().build();
-        Product product = Product.builder().build();
-
-        List<Size> sizes = new ArrayList<>();
-        sizes.add(size);
-        List<Product> products = new ArrayList<>();
-        products.add(product);
 
         Category category = Category.builder()
                                     .categoryId(categoryId)
@@ -74,7 +69,7 @@ class CategoryServiceTest {
 
         Optional<Category> categoryOptional = Optional.of(category);
 
-        doReturn(categoryOptional).when(mockedCategoryRepository).findById(categoryId);
+        doReturn(categoryOptional).when(mockedCategoryRepository).findByIdWithProducts(categoryId);
 
         //when
         CategoryProductsDto categoryProductsDto = categoryService.findById(categoryId);

@@ -67,16 +67,12 @@ class CompanyControllerTest {
     void testFindAllProductsByWrongCompanyId() {
         //prepare
         Long wrongCompanyId = 11L;
+        String message = String.format("Company with id=%d not found.", wrongCompanyId);
+        CompanyNotFoundException companyNotFoundException = new CompanyNotFoundException(message);
 
-        doThrow(new CompanyNotFoundException("Company with id=" + wrongCompanyId + " not found."))
-                .when(mockedCompanyService)
-                .findById(wrongCompanyId);
-
-        //when
-        ResponseEntity<?> responseEntity = companyController.findAllProductsByCompanyId(wrongCompanyId, request);
+        doThrow(companyNotFoundException).when(mockedCompanyService).findById(wrongCompanyId);
 
         //then
-        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-        assertTrue(responseEntity.hasBody());
+        assertThrows(CompanyNotFoundException.class, () -> companyController.findAllProductsByCompanyId(wrongCompanyId, request));
     }
 }

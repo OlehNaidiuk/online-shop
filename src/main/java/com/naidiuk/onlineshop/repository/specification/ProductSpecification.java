@@ -37,9 +37,17 @@ public class ProductSpecification {
                 root.get("color").in(colors);
     }
 
-    public static Specification<Product> filterByPriceRange(int minPrice, int maxPrice) {
+    public static Specification<Product> filterByPriceRange(Integer minPrice, Integer maxPrice) {
+        if (minPrice == null) {
+            minPrice = 0;
+        }
+        if (maxPrice == null) {
+            maxPrice = 100_000;
+        }
+        Integer finalMinPrice = minPrice;
+        Integer finalMaxPrice = maxPrice;
         return (root, query, criteriaBuilder) ->
-                criteriaBuilder.between(root.get("price"), minPrice, maxPrice);
+                criteriaBuilder.between(root.get("price"), finalMinPrice, finalMaxPrice);
     }
 
     public static Specification<Product> filterByQuery(String searchingQuery) {

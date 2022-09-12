@@ -27,11 +27,11 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public CompanyProductsDto findById(Long companyId) {
-        Company company = companyRepository.findById(companyId)
-                            .orElseThrow(() ->
-                            new CompanyNotFoundException("Company with id=" + companyId + " not found."));
+        Company company = companyRepository.findByIdWithProducts(companyId)
+                                    .orElseThrow(() ->
+                                            new CompanyNotFoundException(
+                                                    String.format("Company with id=%d not found.", companyId)));
         return CompanyMapper.transformToDtoWithProducts(company);
     }
 }

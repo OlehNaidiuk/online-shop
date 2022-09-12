@@ -29,9 +29,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional(readOnly = true)
     public CategoryProductsDto findById(Long categoryId) {
-        String message = String.format("Category with id=%d not found.", categoryId);
-        Category category = categoryRepository.findById(categoryId)
-                                            .orElseThrow(() -> new CategoryNotFoundException(message));
+        Category category = categoryRepository.findByIdWithProducts(categoryId)
+                                        .orElseThrow(() ->
+                                                new CategoryNotFoundException(
+                                                        String.format("Category with id=%d not found.", categoryId)));
         return CategoryMapper.transformToDtoWithProducts(category);
     }
 }

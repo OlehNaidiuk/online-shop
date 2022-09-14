@@ -361,3 +361,8 @@ from product
          left join size
                    on size_id in (12, 13, 14, 15, 16, 17, 18, 19)
 where product_id in (15, 13, 17, 19, 21, 12, 1, 5, 39, 41, 50, 52, 58, 60, 47, 48, 43, 44);
+
+INSERT INTO usr (user_id, username, password, role, status)
+VALUES (DEFAULT, 'admin', '$2a$12$BzYKcHt9Co7imxqS2rC2xuiV6IN6urlq7zoVhUx2BMlNp/wGJXCaq', 'ADMIN', 'ACTIVE');
+INSERT INTO usr (user_id, username, password, role, status)
+VALUES (DEFAULT, 'user', '$2a$12$2txe2cyZh/LcipDZ3vTPIexdmPO0FeJqm0L9zAMyNUdSaZ8g8uENu', 'USER', 'ACTIVE');

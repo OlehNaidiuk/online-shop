@@ -5,3 +5,6 @@ spring:
 
 nbu:
   rates-url: https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json
+
+jwt:
+  authorization-header: Authorization

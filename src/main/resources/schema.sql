@@ -76,6 +76,5 @@ CREATE TABLE IF NOT EXISTS usr
     username varchar(50)  NOT NULL UNIQUE,
     password varchar(255) NOT NULL,
     role     varchar(20)  NOT NULL,
-    status   varchar(20)  NOT NULL,
     PRIMARY KEY (user_id)
 );

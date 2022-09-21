@@ -1,6 +1,5 @@
 package com.naidiuk.onlineshop.security;
 
-import com.naidiuk.onlineshop.entity.Status;
 import com.naidiuk.onlineshop.entity.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,10 +24,6 @@ public class SecurityUser implements UserDetails {
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                user.getStatus().equals(Status.ACTIVE),
-                user.getStatus().equals(Status.ACTIVE),
-                user.getStatus().equals(Status.ACTIVE),
-                user.getStatus().equals(Status.ACTIVE),
                 List.of(new SimpleGrantedAuthority(user.getRole().name()))
         );
     }

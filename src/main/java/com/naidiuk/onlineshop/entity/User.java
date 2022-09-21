@@ -1,9 +1,6 @@
 package com.naidiuk.onlineshop.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,6 +8,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 @Builder
 @Table(name = "usr")
 public class User {
@@ -22,6 +20,4 @@ public class User {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @Enumerated(EnumType.STRING)
-    private Status status;
 }

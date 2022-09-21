@@ -7,6 +7,8 @@ import com.naidiuk.onlineshop.error.ProductNotFoundException;
 import com.naidiuk.onlineshop.error.ReviewNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -17,7 +19,9 @@ public class GlobalExceptionHandler {
             CompanyNotFoundException.class,
             CategoryNotFoundException.class,
             ProductNotFoundException.class,
-            ReviewNotFoundException.class
+            ReviewNotFoundException.class,
+            UsernameNotFoundException.class,
+            AuthenticationException.class
     })
     public ResponseEntity<ErrorResponse> handle(RuntimeException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)

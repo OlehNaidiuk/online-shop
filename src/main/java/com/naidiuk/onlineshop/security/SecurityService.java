@@ -1,8 +1,8 @@
 package com.naidiuk.onlineshop.security;
 
-import com.naidiuk.onlineshop.dto.AuthenticationDto;
+import com.naidiuk.onlineshop.dto.AuthenticationUserDto;
 import com.naidiuk.onlineshop.dto.AuthenticationRequestDto;
 
 public interface SecurityService {
-    AuthenticationDto getAuthentication(AuthenticationRequestDto authRequestDto);
+    AuthenticationUserDto getAuthentication(AuthenticationRequestDto authRequestDto);
 }

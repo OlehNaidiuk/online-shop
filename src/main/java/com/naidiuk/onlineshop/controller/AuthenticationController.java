@@ -1,6 +1,6 @@
 package com.naidiuk.onlineshop.controller;
 
-import com.naidiuk.onlineshop.dto.AuthenticationDto;
+import com.naidiuk.onlineshop.dto.AuthenticationUserDto;
 import com.naidiuk.onlineshop.dto.AuthenticationRequestDto;
 import com.naidiuk.onlineshop.security.SecurityService;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +23,8 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequestDto authRequestDto) {
-        AuthenticationDto authDto = securityService.getAuthentication(authRequestDto);
-        return ResponseEntity.status(HttpStatus.OK).body(authDto);
+        AuthenticationUserDto authUserDto = securityService.getAuthentication(authRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).body(authUserDto);
     }
 
     @PostMapping("/logout")

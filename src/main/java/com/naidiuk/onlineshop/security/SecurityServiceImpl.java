@@ -1,6 +1,6 @@
 package com.naidiuk.onlineshop.security;
 
-import com.naidiuk.onlineshop.dto.AuthenticationDto;
+import com.naidiuk.onlineshop.dto.AuthenticationUserDto;
 import com.naidiuk.onlineshop.dto.AuthenticationRequestDto;
 import com.naidiuk.onlineshop.entity.User;
 import com.naidiuk.onlineshop.service.UserService;
@@ -17,14 +17,14 @@ public class SecurityServiceImpl implements SecurityService {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public AuthenticationDto getAuthentication(AuthenticationRequestDto authRequestDto) {
+    public AuthenticationUserDto getAuthentication(AuthenticationRequestDto authRequestDto) {
         User user = userService.findByUsername(authRequestDto.getUsername());
         authenticationManager.authenticate(
                                 new UsernamePasswordAuthenticationToken(
                                         authRequestDto.getUsername(), authRequestDto.getPassword()));
         String token = jwtTokenProvider.createToken(user.getUsername(), user.getRole().name());
 
-        return AuthenticationDto.builder()
+        return AuthenticationUserDto.builder()
                                 .username(user.getUsername())
                                 .token(token)
                                 .build();

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,7 +43,8 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productsDto);
     }
 
-    @PostMapping("/{productId}/review")
+    @PostMapping("/{productId}/reviews")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<?> addReview(HttpServletRequest request,
                                        @PathVariable Long productId,
                                        @RequestBody ReviewDto reviewDto) {
@@ -56,7 +58,8 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productReviewsDto);
     }
 
-    @DeleteMapping("/{productId}/review/{reviewId}")
+    @DeleteMapping("/{productId}/reviews/{reviewId}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<?> removeReview(HttpServletRequest request,
                                           @PathVariable Long productId,
                                           @PathVariable Long reviewId) {
@@ -71,6 +74,7 @@ public class ProductController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> save(HttpServletRequest request, @RequestBody ProductAllDto productAllDto) {
         log.info("Request URL: {}, Host: {}, Address: {}, Request URI: {}, Request params: {}."
                 , request.getRequestURL()
@@ -83,6 +87,7 @@ public class ProductController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> update(HttpServletRequest request, @RequestBody ProductDto productDtoToUpdate) {
         log.info("Request URL: {}, Host: {}, Address: {}, Request URI: {}, Request params: {}."
                 , request.getRequestURL()
@@ -95,6 +100,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{productId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> delete(HttpServletRequest request, @PathVariable Long productId) {
         log.info("Request URL: {}, Host: {}, Address: {}, Request URI: {}, Request params: {}."
                 , request.getRequestURL()

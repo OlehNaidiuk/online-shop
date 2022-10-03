@@ -69,3 +69,12 @@ CREATE TABLE IF NOT EXISTS review
     FOREIGN KEY (product_id)
         REFERENCES product (product_id)
 );
+
+CREATE TABLE IF NOT EXISTS usr
+(
+    user_id  bigint       NOT NULL GENERATED ALWAYS AS IDENTITY,
+    username varchar(50)  NOT NULL UNIQUE,
+    password varchar(255) NOT NULL,
+    role     varchar(20)  NOT NULL,
+    PRIMARY KEY (user_id)
+);

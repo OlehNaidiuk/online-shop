@@ -2,7 +2,6 @@ package com.naidiuk.onlineshop.mapper;
 
 import com.naidiuk.onlineshop.dto.CompanyDto;
 import com.naidiuk.onlineshop.dto.CompanyProductsDto;
-import com.naidiuk.onlineshop.dto.ProductAllDto;
 import com.naidiuk.onlineshop.dto.ProductDto;
 import com.naidiuk.onlineshop.entity.Company;
 

@@ -40,6 +40,6 @@ public class JwtTokenProvider {
     }
 
     private String getUsername(String token) {
-        return Jwts.parserBuilder().build().parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parserBuilder().build().parseClaimsJwt(token).getBody().getSubject();
     }
 }

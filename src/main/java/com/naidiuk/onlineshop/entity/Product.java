@@ -48,4 +48,14 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<Review> reviews = new ArrayList<>();
+
+    public void addReview(Review reviewToAdd) {
+        getReviews().add(reviewToAdd);
+        reviewToAdd.setProduct(this);
+    }
+
+    public void removeReview(Review reviewToDelete) {
+        getReviews().remove(reviewToDelete);
+        reviewToDelete.setProduct(null);
+    }
 }

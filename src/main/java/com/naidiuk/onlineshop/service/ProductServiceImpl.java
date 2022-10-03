@@ -56,14 +56,8 @@ public class ProductServiceImpl implements ProductService {
         List<Long> categoryIds = productFilter.getCategories();
         List<Long> sizeIds = productFilter.getSizes();
         List<Color> colors = productFilter.getColors();
-        int minPrice = 0;
-        if (productFilter.getMinPrice() != null) {
-            minPrice = productFilter.getMinPrice();
-        }
-        int maxPrice = 100_000;
-        if (productFilter.getMaxPrice() != null) {
-            maxPrice = productFilter.getMaxPrice();
-        }
+        Integer minPrice = productFilter.getMinPrice();
+        Integer maxPrice = productFilter.getMaxPrice();
         String query = productFilter.getQuery();
 
         List<Product> products = productRepository.findAll(
@@ -81,9 +75,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductReviewsDto saveProductReview(Long productId, ReviewDto reviewDto) {
         Product product = findByIdWithReviews(productId);
-        Review productReview = ReviewMapper.transformToDao(reviewDto);
-        productReview.setProduct(product);
-        product.getReviews().add(productReview);
+        Review reviewToAdd = ReviewMapper.transformToDao(reviewDto);
+        product.addReview(reviewToAdd);
         Product savedProduct = productRepository.save(product);
         return ProductMapper.transformToDtoWithReviews(savedProduct);
     }
@@ -92,14 +85,13 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public ProductReviewsDto deleteProductReview(Long productId, Long reviewId) {
         Product product = findByIdWithReviews(productId);
-        Review reviewToBeDeleted = product.getReviews().stream()
+        Review reviewToDelete = product.getReviews().stream()
                                         .filter(review -> (review.getReviewId()).equals(reviewId))
                                         .findFirst()
                                         .orElseThrow(() ->
                                                 new ReviewNotFoundException(
                                                         String.format("Review with id=%d not found", reviewId)));
-        product.getReviews().remove(reviewToBeDeleted);
-        reviewToBeDeleted.setProduct(null);
+        product.removeReview(reviewToDelete);
         return ProductMapper.transformToDtoWithReviews(product);
     }
 

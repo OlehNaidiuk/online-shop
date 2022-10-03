@@ -3,12 +3,15 @@ package com.naidiuk.onlineshop.integration.controller;
 import com.naidiuk.onlineshop.controller.ProductController;
 import com.naidiuk.onlineshop.dto.ProductDto;
 import com.naidiuk.onlineshop.service.ProductService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +25,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(ProductController.class)
 class ProductControllerTest {
-    @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private WebApplicationContext webApplicationContext;
     @MockBean
     private ProductService productService;
+
+    @BeforeEach
+    public void setup() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    }
 
     @Test
     void testFindTenRandom() throws Exception {

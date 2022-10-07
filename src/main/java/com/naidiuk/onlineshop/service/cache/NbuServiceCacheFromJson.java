@@ -12,15 +12,15 @@ import org.springframework.web.client.RestTemplate;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
+@Component("nbuServiceCacheFromJson")
 @EnableScheduling
-public class NbuServiceCacheImpl implements NbuServiceCache {
-    private final String nbuRatesUrl;
+public class NbuServiceCacheFromJson implements NbuServiceCache {
+    private final String nbuRatesJsonUrl;
     private final RestTemplate restTemplate;
     private final Map<String, NbuRateDto> nbuRatesCache = new HashMap<>();
 
-    public NbuServiceCacheImpl(@Value("${nbu.rates-url}") String nbuRatesUrl, RestTemplate restTemplate) {
-        this.nbuRatesUrl = nbuRatesUrl;
+    public NbuServiceCacheFromJson(@Value("${nbu.rates.json-url}") String nbuRatesJsonUrl, RestTemplate restTemplate) {
+        this.nbuRatesJsonUrl = nbuRatesJsonUrl;
         this.restTemplate = restTemplate;
         updateNbuRatesCache();
     }
@@ -33,7 +33,7 @@ public class NbuServiceCacheImpl implements NbuServiceCache {
     @Scheduled(cron = "0 31 15 ? * MON-FRI")
     private void updateNbuRatesCache() {
         try {
-            ResponseEntity<NbuRateDto[]> nbuResponse = restTemplate.getForEntity(nbuRatesUrl, NbuRateDto[].class);
+            ResponseEntity<NbuRateDto[]> nbuResponse = restTemplate.getForEntity(nbuRatesJsonUrl, NbuRateDto[].class);
             if (nbuResponse.getBody() != null) {
                 NbuRateDto[] nbuRatesDto = nbuResponse.getBody();
                 nbuRatesCache.clear();

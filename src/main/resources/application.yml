@@ -4,7 +4,9 @@ spring:
     show-sql: true
 
 nbu:
-  rates-url: https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json
+  rates:
+    json-url: https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json
+    xml-url: https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange
 
 jwt:
   authorization-header: Authorization

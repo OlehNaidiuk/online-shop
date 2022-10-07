@@ -1,5 +1,6 @@
 package com.naidiuk.onlineshop.service.cache;
 
+import com.naidiuk.onlineshop.dto.NbuExchangeDto;
 import com.naidiuk.onlineshop.dto.NbuRateDto;
 import com.naidiuk.onlineshop.error.NbuException;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,17 +11,18 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-@Component("nbuServiceCacheFromJson")
+@Component("nbuServiceCacheFromXml")
 @EnableScheduling
-public class NbuServiceCacheFromJson implements NbuServiceCache {
-    private final String nbuRatesJsonUrl;
+public class NbuServiceCacheFromXml implements NbuServiceCache {
+    private final String nbuRatesXmlUrl;
     private final RestTemplate restTemplate;
     private final Map<String, NbuRateDto> nbuRatesCache = new HashMap<>();
 
-    public NbuServiceCacheFromJson(@Value("${nbu.rates.json-url}") String nbuRatesJsonUrl, RestTemplate restTemplate) {
-        this.nbuRatesJsonUrl = nbuRatesJsonUrl;
+    public NbuServiceCacheFromXml(@Value("${nbu.rates.xml-url}") String nbuRatesXmlUrl, RestTemplate restTemplate) {
+        this.nbuRatesXmlUrl = nbuRatesXmlUrl;
         this.restTemplate = restTemplate;
         updateNbuRatesCache();
     }
@@ -33,9 +35,10 @@ public class NbuServiceCacheFromJson implements NbuServiceCache {
     @Scheduled(cron = "0 31 15 ? * MON-FRI")
     private void updateNbuRatesCache() {
         try {
-            ResponseEntity<NbuRateDto[]> nbuResponse = restTemplate.getForEntity(nbuRatesJsonUrl, NbuRateDto[].class);
+            ResponseEntity<NbuExchangeDto> nbuResponse = restTemplate.getForEntity(nbuRatesXmlUrl, NbuExchangeDto.class);
             if (nbuResponse.getBody() != null) {
-                NbuRateDto[] nbuRatesDto = nbuResponse.getBody();
+                NbuExchangeDto nbuExchangeDto = nbuResponse.getBody();
+                List<NbuRateDto> nbuRatesDto = nbuExchangeDto.getCurrencies();
                 nbuRatesCache.clear();
                 for (NbuRateDto nbuRateDto : nbuRatesDto) {
                     nbuRatesCache.put(nbuRateDto.getCurrencyCode(), nbuRateDto);

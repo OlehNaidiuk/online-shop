@@ -26,6 +26,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final CurrencyConverterService currencyConverterService;
+    private final StatisticsService statisticsService;
 
     @Override
     public List<ProductDto> findTenRandom() {
@@ -100,6 +101,13 @@ public class ProductServiceImpl implements ProductService {
         Product product = ProductMapper.transformToDao(productAllDto);
         Product savedProduct = productRepository.save(product);
         return ProductMapper.transformToAllDto(savedProduct);
+    }
+
+    @Override
+    public ProductDto findOne(Long productId) {
+        Product product = findById(productId);
+        statisticsService.incrementProductView(product);
+        return ProductMapper.transformToDto(product);
     }
 
     @Override

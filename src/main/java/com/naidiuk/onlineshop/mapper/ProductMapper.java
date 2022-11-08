@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ProductMapper {
+    private ProductMapper() {
+    }
 
     public static ProductDto transformToDto(Product product) {
         SaleDto saleDto = SaleMapper.transformToDto(product.getSale());

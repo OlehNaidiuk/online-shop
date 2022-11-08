@@ -49,6 +49,61 @@
 			"response": []
 		},
 		{
+			"name": "GetProductById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/products/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"products",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetSortedProductsStatistics",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJub25lIn0.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiJ9.",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/statistics?sortBy=desc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"statistics"
+					],
+					"query": [
+						{
+							"key": "sortBy",
+							"value": "desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "GetAllCompanies",
 			"request": {
 				"method": "GET",
@@ -82,7 +137,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/v1/companies/3/products",
+					"raw": "http://localhost:8080/api/v1/companies/6/products",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -92,7 +147,7 @@
 						"api",
 						"v1",
 						"companies",
-						"3",
+						"6",
 						"products"
 					]
 				}
@@ -105,7 +160,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/v1/companies/11/products",
+					"raw": "http://localhost:8080/api/v1/companies/16/products",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -115,7 +170,7 @@
 						"api",
 						"v1",
 						"companies",
-						"11",
+						"16",
 						"products"
 					]
 				}
@@ -151,7 +206,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/v1/categories/12/products",
+					"raw": "http://localhost:8080/api/v1/categories/22/products",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -161,7 +216,7 @@
 						"api",
 						"v1",
 						"categories",
-						"12",
+						"22",
 						"products"
 					]
 				}
@@ -174,7 +229,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/v1/products?sizes=12,14&minPrice=500&colors=ORANGE&maxPrice=20000&categories=5,6,7",
+					"raw": "http://localhost:8080/api/v1/products?sizes=14,17&minPrice=2000&maxPrice=10000",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -188,23 +243,40 @@
 					"query": [
 						{
 							"key": "sizes",
-							"value": "12,14"
+							"value": "14,17"
 						},
 						{
 							"key": "minPrice",
-							"value": "500"
+							"value": "2000"
 						},
 						{
 							"key": "colors",
-							"value": "ORANGE"
+							"value": "BLACK,WHITE",
+							"disabled": true
 						},
 						{
 							"key": "maxPrice",
-							"value": "20000"
+							"value": "10000"
 						},
 						{
 							"key": "categories",
-							"value": "5,6,7"
+							"value": "5",
+							"disabled": true
+						},
+						{
+							"key": "query",
+							"value": "КЕДИ BOSS",
+							"disabled": true
+						},
+						{
+							"key": "page",
+							"value": "0",
+							"disabled": true
+						},
+						{
+							"key": "size",
+							"value": "10",
+							"disabled": true
 						}
 					]
 				}
@@ -226,7 +298,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/v1/products/11/review",
+					"raw": "http://localhost:8080/api/v1/products/11/reviews",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -237,17 +309,107 @@
 						"v1",
 						"products",
 						"11",
-						"review"
+						"reviews"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "AddProduct",
+			"name": "Login",
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user\",\r\n    \"password\": \"user\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddProductAsAdmin",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJub25lIn0.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiJ9.",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"price\": 4099.00,\r\n    \"currency\": \"UAH\",\r\n    \"color\": \"ORANGE\",\r\n    \"name\": \"Куртка вельветова Levi's\",\r\n    \"description\": \"Куртка із колекції Levi's. Злегка утеплена модель виготовлена з вельветового матеріалу.\",\r\n    \"male\": \"MEN\",\r\n    \"category\": {\r\n        \"categoryId\": 2\r\n    },\r\n    \"sizes\": [\r\n        {\r\n            \"sizeId\": 2\r\n        },\r\n        {\r\n            \"sizeId\": 3\r\n        },\r\n        {\r\n            \"sizeId\": 4\r\n        },\r\n        {\r\n            \"sizeId\": 5\r\n        }\r\n    ],\r\n    \"company\": {\r\n        \"companyId\": 6\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddProductAsUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJub25lIn0.eyJzdWIiOiJ1c2VyIiwicm9sZSI6IlVTRVIifQ.",
+						"type": "default"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"price\": 4099.00,\r\n    \"currency\": \"UAH\",\r\n    \"color\": \"ORANGE\",\r\n    \"name\": \"Куртка вельветова Levi's\",\r\n    \"description\": \"Куртка із колекції Levi's. Злегка утеплена модель виготовлена з вельветового матеріалу.\",\r\n    \"male\": \"MEN\",\r\n    \"category\": {\r\n        \"categoryId\": 2\r\n    },\r\n    \"sizes\": [\r\n        {\r\n            \"sizeId\": 2\r\n        },\r\n        {\r\n            \"sizeId\": 3\r\n        },\r\n        {\r\n            \"sizeId\": 4\r\n        },\r\n        {\r\n            \"sizeId\": 5\r\n        }\r\n    ],\r\n    \"company\": {\r\n        \"companyId\": 6\r\n    }\r\n}",
@@ -277,9 +439,15 @@
 			"name": "DeleteProductReview",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJub25lIn0.eyJzdWIiOiJ1c2VyIiwicm9sZSI6IlVTRVIifQ.",
+						"type": "default"
+					}
+				],
 				"url": {
-					"raw": "http://localhost:8080/api/v1/products/1/review/1",
+					"raw": "http://localhost:8080/api/v1/products/11/reviews/5",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -289,9 +457,9 @@
 						"api",
 						"v1",
 						"products",
-						"1",
-						"review",
-						"1"
+						"11",
+						"reviews",
+						"5"
 					]
 				}
 			},
@@ -301,9 +469,15 @@
 			"name": "DeleteProductReviewWithWrongReviewId",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJub25lIn0.eyJzdWIiOiJ1c2VyIiwicm9sZSI6IlVTRVIifQ.",
+						"type": "default"
+					}
+				],
 				"url": {
-					"raw": "http://localhost:8080/api/v1/products/1/review/11",
+					"raw": "http://localhost:8080/api/v1/products/1/reviews/11",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -314,7 +488,7 @@
 						"v1",
 						"products",
 						"1",
-						"review",
+						"reviews",
 						"11"
 					]
 				}
@@ -325,7 +499,13 @@
 			"name": "DeleteProduct",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJub25lIn0.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiJ9.",
+						"type": "default"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8080/api/v1/products/12",
 					"protocol": "http",
@@ -347,7 +527,13 @@
 			"name": "DeleteProductWithWrongProductId",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJub25lIn0.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiJ9.",
+						"type": "default"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8080/api/v1/products/111",
 					"protocol": "http",
@@ -369,7 +555,13 @@
 			"name": "UpdateProduct",
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJub25lIn0.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiJ9.",
+						"type": "default"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"productId\": 1,\r\n    \"price\": 499.00,\r\n    \"currency\": \"UAH\",\r\n    \"color\": \"BLUE\",\r\n    \"name\": \"Сандалі HUGO Jens Sand\",\r\n    \"description\": \"Сандалі із колекції HUGO. Модель виготовлена із текстильного матеріалу.\",\r\n    \"male\": \"MEN\"\r\n}",
@@ -399,7 +591,13 @@
 			"name": "UpdateProductWithWrongProductId",
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "eyJhbGciOiJub25lIn0.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJBRE1JTiJ9.",
+						"type": "default"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"productId\": 111,\r\n    \"price\": 499.00,\r\n    \"currency\": \"UAH\",\r\n    \"color\": \"BLUE\",\r\n    \"name\": \"Сандалі HUGO Jens Sand\",\r\n    \"description\": \"Сандалі із колекції HUGO. Модель виготовлена із текстильного матеріалу.\",\r\n    \"male\": \"MEN\"\r\n}",

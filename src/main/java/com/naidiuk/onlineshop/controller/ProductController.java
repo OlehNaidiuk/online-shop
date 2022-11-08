@@ -43,6 +43,18 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productsDto);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findById(HttpServletRequest request, @PathVariable Long id) {
+        log.info("Request URL: {}, Host: {}, Address: {}, Request URI: {}, Request params: {}."
+                , request.getRequestURL()
+                , request.getRemoteHost()
+                , request.getRemoteAddr()
+                , request.getRequestURI()
+                , request.getQueryString());
+        ProductDto productDto = productService.findOne(id);
+        return ResponseEntity.status(HttpStatus.OK).body(productDto);
+    }
+
     @PostMapping("/{productId}/reviews")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<?> addReview(HttpServletRequest request,

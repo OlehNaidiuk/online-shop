@@ -78,3 +78,11 @@ CREATE TABLE IF NOT EXISTS usr
     role     varchar(20)  NOT NULL,
     PRIMARY KEY (user_id)
 );
+
+CREATE TABLE IF NOT EXISTS statistics
+(
+    product_id bigint NOT NULL,
+    views      bigint,
+    CONSTRAINT FK_product_id FOREIGN KEY (product_id)
+        REFERENCES product (product_id)
+)

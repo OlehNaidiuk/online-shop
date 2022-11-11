@@ -1,6 +1,6 @@
 package com.naidiuk.onlineshop.controller;
 
-import com.naidiuk.onlineshop.dto.StatisticsDto;
+import com.naidiuk.onlineshop.dto.ProductStatisticsDto;
 import com.naidiuk.onlineshop.service.StatisticsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,7 @@ public class StatisticsController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> findAllAndSort(
             @RequestParam(required = false, defaultValue = "asc") String sortBy) {
-        List<StatisticsDto> productsStatistics;
+        List<ProductStatisticsDto> productsStatistics;
         if (sortBy.equals("asc")) {
             productsStatistics = statisticsService.getProductsStatisticsSortedByAscending();
         } else {

@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class StatisticsDto {
-    private long views;
+public class ProductStatisticsDto {
+    private long productViews;
     private ProductDto productDto;
 }

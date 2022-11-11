@@ -10,12 +10,13 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Setter
 @Getter
-@Table(name = "statistics")
-public class Statistics {
+@Table(name = "product_statistics")
+public class ProductStatistics {
     @Id
     @Column(name = "product_id")
     private Long id;
-    private long views;
+    @Column(name = "product_views")
+    private long productViews;
     @OneToOne
     @MapsId
     @JoinColumn(name = "product_id")

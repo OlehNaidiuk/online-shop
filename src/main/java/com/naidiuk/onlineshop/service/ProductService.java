@@ -12,7 +12,7 @@ public interface ProductService {
     ProductReviewsDto saveProductReview(Long productId, ReviewDto reviewDto);
     ProductReviewsDto deleteProductReview(Long productId, Long reviewId);
     ProductAllDto save(ProductAllDto productAllDto);
-    ProductDto findOne(Long productId);
+    ProductDto findById(Long productId);
     ProductDto update(ProductDto productDtoToUpdate);
     ProductDto deleteById(Long productId);
 }

@@ -104,8 +104,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDto findOne(Long productId) {
-        Product product = findById(productId);
+    public ProductDto findById(Long productId) {
+        Product product = findOne(productId);
         statisticsService.incrementProductView(product);
         return ProductMapper.transformToDto(product);
     }
@@ -114,7 +114,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public ProductDto update(ProductDto productDtoToUpdate) {
         Long productId = productDtoToUpdate.getProductId();
-        Product product = findById(productId);
+        Product product = findOne(productId);
         product.setPrice(productDtoToUpdate.getPrice());
         product.setCurrency(productDtoToUpdate.getCurrency());
         product.setColor(productDtoToUpdate.getColor());
@@ -126,7 +126,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto deleteById(Long productId) {
-        Product product = findById(productId);
+        Product product = findOne(productId);
         ProductDto productDto = ProductMapper.transformToDto(product);
         productRepository.deleteById(productId);
         return productDto;
@@ -139,7 +139,7 @@ public class ProductServiceImpl implements ProductService {
                                 String.format("Product with id=%d not found", productId)));
     }
 
-    private Product findById(Long productId) {
+    private Product findOne(Long productId) {
         return productRepository.findById(productId)
                 .orElseThrow(() ->
                         new ProductNotFoundException(

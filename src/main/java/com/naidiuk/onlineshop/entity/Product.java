@@ -50,7 +50,7 @@ public class Product {
     private List<Review> reviews = new ArrayList<>();
     @OneToOne(mappedBy = "product")
     @PrimaryKeyJoinColumn
-    private Statistics statistics;
+    private ProductStatistics productStatistics;
 
     public void addReview(Review reviewToAdd) {
         getReviews().add(reviewToAdd);
@@ -60,5 +60,10 @@ public class Product {
     public void removeReview(Review reviewToDelete) {
         getReviews().remove(reviewToDelete);
         reviewToDelete.setProduct(null);
+    }
+
+    public void addProductStatistics(ProductStatistics productStatistics) {
+        this.setProductStatistics(productStatistics);
+        productStatistics.setProduct(this);
     }
 }

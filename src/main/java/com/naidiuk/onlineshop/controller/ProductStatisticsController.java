@@ -16,19 +16,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/statistics")
 @RequiredArgsConstructor
-public class StatisticsController {
+public class ProductStatisticsController {
     private final StatisticsService statisticsService;
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> findAllAndSort(
-            @RequestParam(required = false, defaultValue = "asc") String sortBy) {
-        List<ProductStatisticsDto> productsStatistics;
-        if (sortBy.equals("asc")) {
-            productsStatistics = statisticsService.getProductsStatisticsSortedByAscending();
-        } else {
-            productsStatistics = statisticsService.getProductsStatisticsSortedByDescending();
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(productsStatistics);
+            @RequestParam(required = false, defaultValue = "desc") String sortDirection) {
+
+        List<ProductStatisticsDto> sortedProductsStatisticsDto = statisticsService.getSortedProductsStatistics(sortDirection);
+        return ResponseEntity.status(HttpStatus.OK).body(sortedProductsStatisticsDto);
     }
 }

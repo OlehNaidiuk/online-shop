@@ -1,51 +1,42 @@
 package com.naidiuk.onlineshop.service;
 
-import com.naidiuk.onlineshop.dto.StatisticsDto;
+import com.naidiuk.onlineshop.dto.ProductStatisticsDto;
 import com.naidiuk.onlineshop.entity.Product;
-import com.naidiuk.onlineshop.entity.Statistics;
+import com.naidiuk.onlineshop.entity.ProductStatistics;
 import com.naidiuk.onlineshop.mapper.StatisticsMapper;
-import com.naidiuk.onlineshop.repository.StatisticsRepository;
+import com.naidiuk.onlineshop.repository.ProductStatisticsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class StatisticsServiceImpl implements StatisticsService {
-    private final StatisticsRepository statisticsRepository;
+    private final ProductStatisticsRepository productStatisticsRepository;
 
     @Override
     public void incrementProductView(Product product) {
-        Optional<Statistics> statisticsOptional = statisticsRepository.findById(product.getProductId());
-        Statistics statistics;
-        if (statisticsOptional.isEmpty()) {
-            statistics = new Statistics();
+        ProductStatistics productStatistics = productStatisticsRepository.findById(product.getProductId())
+                                                                    .orElse(new ProductStatistics());
+        long productViews = productStatistics.getProductViews();
+        productStatistics.setProductViews(productViews + 1);
+        product.addProductStatistics(productStatistics);
+        productStatisticsRepository.save(productStatistics);
+    }
+
+    @Override
+    public List<ProductStatisticsDto> getSortedProductsStatistics(String sortDirection) {
+        Sort sortByProductViews;
+        if (sortDirection.equals("asc")) {
+            sortByProductViews = Sort.by(Sort.Direction.ASC, "productViews");
         } else {
-            statistics = statisticsOptional.get();
+            sortByProductViews = Sort.by(Sort.Direction.DESC, "productViews");
         }
-        long views = statistics.getViews();
-        statistics.setViews(views + 1);
-        product.setStatistics(statistics);
-        statistics.setProduct(product);
-        statisticsRepository.save(statistics);
-    }
-
-    @Override
-    public List<StatisticsDto> getProductsStatisticsSortedByAscending() {
-        List<Statistics> productStatistics = statisticsRepository.findAll(Sort.by(Sort.Direction.ASC, "views"));
-        return productStatistics.stream()
-                .map(StatisticsMapper::transformToDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<StatisticsDto> getProductsStatisticsSortedByDescending() {
-        List<Statistics> productStatistics = statisticsRepository.findAll(Sort.by(Sort.Direction.DESC, "views"));
-        return productStatistics.stream()
+        List<ProductStatistics> sortedProductStatistics = productStatisticsRepository.findAll(sortByProductViews);
+        return sortedProductStatistics.stream()
                 .map(StatisticsMapper::transformToDto)
                 .collect(Collectors.toList());
     }

@@ -51,7 +51,7 @@ public class ProductController {
                 , request.getRemoteAddr()
                 , request.getRequestURI()
                 , request.getQueryString());
-        ProductDto productDto = productService.findOne(id);
+        ProductDto productDto = productService.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(productDto);
     }
 

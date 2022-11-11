@@ -366,3 +366,9 @@ INSERT INTO usr (user_id, username, password, role)
 VALUES (DEFAULT, 'admin', '$2a$12$BzYKcHt9Co7imxqS2rC2xuiV6IN6urlq7zoVhUx2BMlNp/wGJXCaq', 'ADMIN');
 INSERT INTO usr (user_id, username, password, role)
 VALUES (DEFAULT, 'user', '$2a$12$2txe2cyZh/LcipDZ3vTPIexdmPO0FeJqm0L9zAMyNUdSaZ8g8uENu', 'USER');
+
+INSERT INTO product_statistics (product_id, product_views) VALUES (1, 1);
+INSERT INTO product_statistics (product_id, product_views) VALUES (2, 2);
+INSERT INTO product_statistics (product_id, product_views) VALUES (3, 3);
+INSERT INTO product_statistics (product_id, product_views) VALUES (4, 4);
+INSERT INTO product_statistics (product_id, product_views) VALUES (5, 5);

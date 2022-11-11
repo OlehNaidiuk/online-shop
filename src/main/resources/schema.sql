@@ -79,10 +79,10 @@ CREATE TABLE IF NOT EXISTS usr
     PRIMARY KEY (user_id)
 );
 
-CREATE TABLE IF NOT EXISTS statistics
+CREATE TABLE IF NOT EXISTS product_statistics
 (
-    product_id bigint NOT NULL,
-    views      bigint,
+    product_id    bigint NOT NULL,
+    product_views bigint,
     CONSTRAINT FK_product_id FOREIGN KEY (product_id)
         REFERENCES product (product_id)
 )

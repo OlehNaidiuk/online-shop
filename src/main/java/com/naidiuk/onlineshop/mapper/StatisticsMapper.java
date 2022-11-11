@@ -1,20 +1,20 @@
 package com.naidiuk.onlineshop.mapper;
 
 import com.naidiuk.onlineshop.dto.ProductDto;
-import com.naidiuk.onlineshop.dto.StatisticsDto;
+import com.naidiuk.onlineshop.dto.ProductStatisticsDto;
 import com.naidiuk.onlineshop.entity.Product;
-import com.naidiuk.onlineshop.entity.Statistics;
+import com.naidiuk.onlineshop.entity.ProductStatistics;
 
 public class StatisticsMapper {
     private StatisticsMapper() {
     }
 
-    public static StatisticsDto transformToDto(Statistics statistics) {
-        Product product = statistics.getProduct();
+    public static ProductStatisticsDto transformToDto(ProductStatistics productStatistics) {
+        Product product = productStatistics.getProduct();
         ProductDto productDto = ProductMapper.transformToDto(product);
 
-        return StatisticsDto.builder()
-                .views(statistics.getViews())
+        return ProductStatisticsDto.builder()
+                .productViews(productStatistics.getProductViews())
                 .productDto(productDto)
                 .build();
     }
